@@ -1,0 +1,38 @@
+<resources>
+
+    <style name="bottomEnd">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">end|bottom</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+    <style name="text">
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:gravity">end</item>
+        <item name="android:paddingRight">@dimen/dPad</item>
+        <item name="android:paddingLeft">@dimen/dPad</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">end</item>
+    </style>
+
+    <style name="button" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="android:layout_height">@dimen/buttonSize</item>
+        <item name="android:layout_width">@dimen/buttonSize</item>
+        <item name="android:padding">@dimen/pad1</item>
+        <item name="android:elevation">2dp</item>
+        <item name="android:layout_margin">@dimen/mar</item>
+    </style>
+
+    <style name="square" parent="button">
+        <item name="android:background">@drawable/square</item>
+        <item name="android:src">@drawable/square</item>
+    </style>
+
+    <style name="circular" parent="button">
+        <item name="android:background">@drawable/circular</item>
+        <item name="android:src">@drawable/circular</item>
+    </style>
+</resources>

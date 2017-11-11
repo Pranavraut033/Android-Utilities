@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="background">Background</string>
+    <string name="menu_icon">MenuIcon</string>
+    <string name="choose_color">Choose Color</string>
+</resources>

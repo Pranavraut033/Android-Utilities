@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FloatingMenu">
+        <attr name="numOption" format="integer" />
+        <attr name="useCard" format="boolean" />
+        <attr name="statusBarColor" format="color" />
+        <attr name="backgroundColor" format="integer" />
+        <attr name="baseOptionColor" format="color" />
+        <attr name="baseBtnIcons" format="reference" />
+        <attr name="optionBtnColor" format="color" />
+        <attr name="optionTexts" format="reference" />
+        <attr name="optionIcons" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="text">
+        <attr name="limit" format="integer" />
+        <attr name="hint" format="string" />
+    </declare-styleable>
+</resources>

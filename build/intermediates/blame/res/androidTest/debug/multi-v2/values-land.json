@@ -1,0 +1,55 @@
+{
+    "logs": [
+        {
+            "outputFile": "C:\\Users\\Pranav\\AndroidStudioProjects\\QRCodeProtection\\Utilities\\build\\intermediates\\incremental\\mergeDebugAndroidTestResources\\merged.dir\\values-land\\values-land.xml",
+            "map": [
+                {
+                    "source": "C:\\Users\\Pranav\\AndroidStudioProjects\\QRCodeProtection\\Utilities\\build\\intermediates\\bundles\\debug\\res\\values-land\\values-land.xml",
+                    "from": {
+                        "startLines": "2,3,4,5,6",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "55,93,135,170,205",
+                        "endColumns": "37,41,34,34,43",
+                        "endOffsets": "88,130,165,200,244"
+                    },
+                    "to": {
+                        "startLines": "6,7,8,9,10",
+                        "startColumns": "4,4,4,4,4",
+                        "startOffsets": "328,366,408,443,478",
+                        "endColumns": "37,41,34,34,43",
+                        "endOffsets": "361,403,438,473,517"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Pranav\\.gradle\\caches\\transforms-1\\files-1.1\\appcompat-v7-26.1.0.aar\\c5532b519f0b469923dc19325a7c500b\\res\\values-land\\values-land.xml",
+                    "from": {
+                        "startLines": "2,3,4,5",
+                        "startColumns": "4,4,4,4",
+                        "startOffsets": "55,125,189,260",
+                        "endColumns": "69,63,70,67",
+                        "endOffsets": "120,184,255,323"
+                    }
+                },
+                {
+                    "source": "C:\\Users\\Pranav\\.gradle\\caches\\transforms-1\\files-1.1\\design-26.1.0.aar\\3f74cbfc8096cc2414572f2656c5b2f3\\res\\values-land\\values-land.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endLines": "5",
+                        "endColumns": "12",
+                        "endOffsets": "232"
+                    },
+                    "to": {
+                        "startLines": "11",
+                        "startColumns": "4",
+                        "startOffsets": "522",
+                        "endLines": "14",
+                        "endColumns": "12",
+                        "endOffsets": "699"
+                    }
+                }
+            ]
+        }
+    ]
+}
