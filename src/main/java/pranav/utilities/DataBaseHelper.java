@@ -14,6 +14,8 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static pranav.utilities.Log.TAG;
+
 
 /**
  * Created on 06-08-2017 at 19:39 by Pranav Raut.
@@ -63,10 +65,9 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
         return result;
     }
 
-    public int getID(String col, Object object) {
+    protected int getID(String col, Object object) {
         Cursor cursor = this.getCursor(query.getSelectItemQuery(col, object));
-        if (cursor != null) {
-            cursor.moveToFirst();
+        if (cursor != null && cursor.moveToFirst()) {
             int i = cursor.getInt(0);
             cursor.close();
             return i;
@@ -75,14 +76,7 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
     }
 
     public int getID(String col, String object) {
-        Cursor cursor = getCursor(query.getSelectItemQuery(col, object));
-        if (cursor != null) {
-            cursor.moveToFirst();
-            int i = cursor.getInt(0);
-            cursor.close();
-            return i;
-        }
-        return -1;
+        return getID(col, (Object) object);
     }
 
     @Nullable
@@ -105,6 +99,7 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
     public abstract E getItem(int index);
 
     public int deleteItem(int id) {
+        Log.d(TAG, "deleteItem() called with: id = [" + id + "]");
         return getWritableDatabase().delete(query.getDBName(),
                 "id =? ", new String[]{Integer.toString(id)});
     }
@@ -135,7 +130,7 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
      * @author Pranav
      * @version 0
      */
-    public static final class SQLiteQuery {
+    public static class SQLiteQuery {
         public static final String TAG = "preons";
         private final static String[] VALUES = {"BLOB", "BOOLEAN", "DATETIME", "INT", "MEDIUMINT", "BIGINT", "FLOAT", "DOUBLE", "CHARACTER", "TEXT"};
         private final String name;
@@ -147,14 +142,14 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
             this.name = name;
         }
 
-        public void addCol(@Size(min = 1) String[] names, @dataType String[] types) {
+        public final void addCol(@Size(min = 1) String[] names, @dataType String[] types) {
             if (names.length == types.length) for (int i = 0; i < names.length; i++)
                 addCol(names[i], types[i]);
             else throw new IllegalArgumentException("size of name and type don't match " +
                     "name: [" + names.length + "] : type [" + types.length + "]");
         }
 
-        public void addCol(@Size(min = 1) String name, @dataType String type) {
+        public final void addCol(@Size(min = 1) String name, @dataType String type) {
             if (Arrays.binarySearch(VALUES, name.toUpperCase()) > 0)
                 throw new IllegalAccessError("Cannot use \"" + name + "\"");
             if (names.contains(name))
@@ -164,7 +159,7 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
         }
 
         @NonNull
-        public String getCreateQuery() {
+        public final String getCreateQuery() {
             StringBuilder builder = new StringBuilder(200);
             builder.append("create table ")
                     .append(name).append("(").append("id INTEGER PRIMARY KEY autoincrement, ");
@@ -176,7 +171,7 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
             return builder.toString();
         }
 
-        public String getDBName() {
+        public final String getDBName() {
             return name;
         }
 
@@ -184,32 +179,37 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
          * @return the expression for which the class @{@link SQLiteOpenHelper} will drop table creation if the table
          * has last column existing in the table else will create new table
          */
-        public String getExistsQuery() {
+        @NonNull
+        public final String getExistsQuery() {
             return "drop table if exists " + names.get(names.size() - 1);
         }
 
-        public ArrayList<String> getNames() {
+        public final ArrayList<String> getNames() {
             return names;
         }
 
-        public String getSelectItemQuery(String colName, Object value) {
+        @NonNull
+        public final String getSelectItemQuery(String colName, Object value) {
             return getSelectTableQuery() + " WHERE " + colName + " = " + value;
         }
 
-        public String getSelectItemQuery(String colName, String value) {
+        @NonNull
+        public final String getSelectItemQuery(String colName, String value) {
             return getSelectTableQuery() + " WHERE " + colName + " = " + value;
         }
 
-        public String getSelectItemQuery(int colIndex, Object value) {
+        @NonNull
+        public final String getSelectItemQuery(int colIndex, Object value) {
             return getSelectTableQuery() + " WHERE " + names.get(colIndex) + " = " + value;
         }
 
         @NonNull
-        public String[] getNamesToArray() {
+        public final String[] getNamesToArray() {
             return names.toArray(new String[names.size()]);
         }
 
-        public String getSelectTableQuery() {
+        @NonNull
+        public final String getSelectTableQuery() {
             return "SELECT * from " + name;
         }
     }

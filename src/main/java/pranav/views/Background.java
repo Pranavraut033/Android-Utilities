@@ -2,6 +2,7 @@ package pranav.views;
 
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.FloatRange;
 import android.support.annotation.IdRes;
@@ -13,7 +14,7 @@ import android.widget.FrameLayout;
 
 import pranav.utilities.ArgbEval;
 
-import static pranav.utilities.Animations.ANIMATION_TIME;
+import static pranav.utilities.Animations.ANIMATION_DURATION;
 import static pranav.utilities.Utilities.MATCH;
 import static pranav.utilities.Utilities.isFinite;
 
@@ -24,7 +25,6 @@ import static pranav.utilities.Utilities.isFinite;
 
 public class Background extends FrameLayout  {
 
-    @IdRes
     public static final int BACK_ID = 2146;
     private int color = 0x90000000;
     private float percent;
@@ -32,7 +32,7 @@ public class Background extends FrameLayout  {
     private ArgbEval argbEval = new ArgbEval(0, color);
     private ObjectAnimator animator;
 
-    private FrameLayout listener;
+    private FrameLayout clickCaptureView;
     @Nullable
     private Keys keys;
     private TimeInterpolator interpolator;
@@ -53,22 +53,23 @@ public class Background extends FrameLayout  {
         setLayoutParams(MATCH);
         setFocusableInTouchMode(true);
         setFocusable(true);
-        listener = new FrameLayout(getContext());
-        listener.setLayoutParams(MATCH);
-        super.addView(listener);
+        clickCaptureView = new FrameLayout(getContext());
+        clickCaptureView.setLayoutParams(MATCH);
+        super.addView(clickCaptureView);
         argbEval.setObject(this);
-        listener.setId(BACK_ID);
+        clickCaptureView.setId(BACK_ID);
         l = new Listeners.l1<>(this);
     }
 
     public Background setClickListener(@Nullable final OnClickListener l) {
-        listener.setOnClickListener(l);
+        clickCaptureView.setOnClickListener(l);
         return this;
     }
 
-    public void setColor(int color) {
+    public Background setColor(int color) {
         this.color = color;
         argbEval = new ArgbEval(0, color);
+        return this;
     }
 
     @Override
@@ -93,7 +94,7 @@ public class Background extends FrameLayout  {
         if (percent != this.percent)
             if (animator == null || !animator.isStarted()) {
                 animator = ObjectAnimator.ofFloat(this, "percent", 100 - percent, percent);
-                animator.setDuration(ANIMATION_TIME).setInterpolator(interpolator);
+                animator.setDuration(ANIMATION_DURATION).setInterpolator(interpolator);
                 animator.addListener(l.getAnimator());
                 animator.start();
             }
@@ -103,7 +104,7 @@ public class Background extends FrameLayout  {
         l.addListener(l1s);
     }
 
-    void remove(L1... l1s) {
+    void removeListener(L1... l1s) {
         l.removeListener(l1s);
     }
 
@@ -133,7 +134,7 @@ public class Background extends FrameLayout  {
     }
 
     public Background setState(@vi int visibility) {
-        listener.setVisibility(state = visibility);
+        clickCaptureView.setVisibility(state = visibility);
         animator = null;
         if (visibility == VISIBLE) {
             percent = 100;
@@ -149,5 +150,4 @@ public class Background extends FrameLayout  {
     public Listeners.l1<Background> getL() {
         return l;
     }
-
 }

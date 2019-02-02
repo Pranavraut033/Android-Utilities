@@ -105,11 +105,10 @@ public class Listeners {
         protected ArrayList<L2> listeners = new ArrayList<>();
 
         private E chain;
-        private boolean running;
-        private boolean ended;
+        private boolean running = false;
+        private boolean ended= true;
 
         public l2() {
-
         }
 
         public l2(E e) {

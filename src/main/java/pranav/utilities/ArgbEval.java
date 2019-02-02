@@ -22,7 +22,7 @@ public class ArgbEval extends ArgbEvaluator {
         this.finalValue = finalValue;
     }
 
-    public Integer getValue(float fraction) {
+    public int getValue(float fraction) {
         int value = (Integer) evaluate(interpolator.getInterpolation(fraction), startValue, finalValue);
         if (object != null) {
             if (object instanceof TextView)

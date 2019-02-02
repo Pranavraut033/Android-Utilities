@@ -18,9 +18,9 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.CardView;
 import android.transition.ArcMotion;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.ViewAnimationUtils;
 import android.view.Window;
 import android.view.animation.DecelerateInterpolator;
@@ -36,9 +36,10 @@ import java.util.ArrayList;
 import pranav.utilities.Animations;
 import pranav.utilities.Utilities;
 
-import static pranav.utilities.Animations.ANIMATION_TIME;
+import static pranav.utilities.Animations.ANIMATION_DURATION;
 import static pranav.utilities.Animations.animateAlpha;
 import static pranav.utilities.Animations.animateRotate;
+import static pranav.utilities.Log.TAG;
 import static pranav.utilities.Utilities.Colors.blend;
 import static pranav.utilities.Utilities.Colors.changeAlpha;
 import static pranav.utilities.Utilities.Colors.isBright;
@@ -95,7 +96,11 @@ public final class FloatingMenu extends FrameLayout {
     private boolean once = true;
     private float oXc, oYc, nXb, nYb, oXb, oYb, v;
     private Interpolator interpolator = Animations.DI;
-    final private OnClickListener listener2 = v -> toggleMenu();
+    public final OnClickListener mainBtnListener = v -> toggleMenu(),
+            backgroundListener = v -> {
+                visible = true;
+                mainBtnListener.onClick(v);
+            };
 
     public FloatingMenu(Context context) {
         this(context, null);
@@ -107,6 +112,8 @@ public final class FloatingMenu extends FrameLayout {
         res = new Utilities.Resources(context);
         c = res.getDimen(R.dimen.pad28dp);
         inti();
+        int childCount = getChildCount();
+        Log.i(TAG, "FloatingMenu: " + childCount);
     }
 
     @Override
@@ -128,7 +135,7 @@ public final class FloatingMenu extends FrameLayout {
     }
 
     private void inti() {
-        LayoutInflater.from(context).inflate(R.layout.floating_menu, this);
+        inflate(context, R.layout.floating_menu, this);
         mainContainer = findViewById(R.id.mainContainer);
         cardView = findViewById(R.id.menuCard);
         i = -res.getDimen(R.dimen.pad32dp);
@@ -154,6 +161,8 @@ public final class FloatingMenu extends FrameLayout {
                 ref2 = typedArray.getResourceId(R.styleable.FloatingMenu_optionIcons, 0);
         String[] strings = ref == 0 ? helper.getOptionTexts() : context.getResources().getStringArray(ref);
         if (ref2 != 0) helper.setOptionBtnRes(context.getResources().getStringArray(ref2));
+        float radius = typedArray.getDimension(R.styleable.FloatingMenu_cardRadius, res.getPx(2));
+        cardView.setRadius(radius);
         helper.setUseCard(useCard)
                 .setMainBtnBaseColor(color)
                 .setImageBackground(drawable)
@@ -199,6 +208,10 @@ public final class FloatingMenu extends FrameLayout {
         }
     }
 
+    public FloatingActionButton getMainBtn() {
+        return mainBtn;
+    }
+
     private void cardView() {
         cardView.setCardElevation(res.getDimen(R.dimen.pad4dp));
         cardView.setVisibility(INVISIBLE);
@@ -236,10 +249,7 @@ public final class FloatingMenu extends FrameLayout {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
             background.setBackground(details.getImageBackground());
         else background.setImageDrawable(details.getImageBackground());
-        background.setOnClickListener(v -> {
-            visible = true;
-            listener2.onClick(v);
-        });
+        background.setOnClickListener(backgroundListener);
     }
 
     private void mainBtn() {
@@ -248,22 +258,25 @@ public final class FloatingMenu extends FrameLayout {
         mainBtn.setImageDrawable(details.getMainBtnRes());
         mainBtn.setBackgroundTintList(new ColorStateList(new
                 int[][]{{0}}, new int[]{details.getMainBtnBaseColor()}));
-        mainBtn.setOnClickListener(listener2);
-        MBAnimator.setDuration(ANIMATION_TIME);
+        mainBtn.setOnClickListener(mainBtnListener);
+        MBAnimator.setDuration(ANIMATION_DURATION);
         MBAnimator.setColorChangeListener(listener);
-        mSRCAnimator.setDuration(ANIMATION_TIME);
+        mSRCAnimator.setDuration(ANIMATION_DURATION);
         mSRCAnimator.setColorChangeListener(listener1);
     }
 
-    public void toggleMenu() {
+    public synchronized void toggleMenu() {
         if (visible) hide();
         else show();
     }
 
     private void show() {
+        background.setOnClickListener(backgroundListener);
+        mainBtn.setOnClickListener(null);
+        if (events != null) events.onOpen();
         requestFocus();
         visible = true;
-        animateAlpha(background, 1);
+        Animations.animateAlpha(background, 1);
         if (!isUseCard())
             mainBtnShow();
         statusBarShow();
@@ -286,14 +299,14 @@ public final class FloatingMenu extends FrameLayout {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 ObjectAnimator animator = ObjectAnimator.ofFloat(cardView, "x", "y",
                         arcMotion.getPath(oXc, oYc, nXc, nYc))
-                        .setDuration(ANIMATION_TIME);
+                        .setDuration(ANIMATION_DURATION);
                 ObjectAnimator animator2 = ObjectAnimator.ofFloat(mainBtn, "x", "y",
                         arcMotion.getPath(oXb, oYb, nXb, nYb))
-                        .setDuration(ANIMATION_TIME);
+                        .setDuration(ANIMATION_DURATION);
                 Animator anim = ViewAnimationUtils.createCircularReveal(
                         cardView, cardView.getWidth() / 2, cardView.getHeight() / 2, c, v)
-                        .setDuration(ANIMATION_TIME);
-                animateAlpha(mainBtn, 0, ANIMATION_TIME - 50, interpolator);
+                        .setDuration(ANIMATION_DURATION);
+                animateAlpha(mainBtn, 0, ANIMATION_DURATION - 50, interpolator);
                 animateAlpha(cardView, 1, interpolator);
                 anim.setInterpolator(interpolator);
                 anim.start();
@@ -305,14 +318,14 @@ public final class FloatingMenu extends FrameLayout {
                 cardView.setScaleX(0);
                 cardView.setScaleY(0);
                 cardView.animate().alpha(1).scaleY(1).scaleX(1).x(nXc).y(nYc).setInterpolator(interpolator)
-                        .setDuration(ANIMATION_TIME).start();
+                        .setDuration(ANIMATION_DURATION).start();
                 mainBtn.animate().alpha(0).x(nXb).y(nYb).setInterpolator(interpolator)
-                        .setDuration(ANIMATION_TIME).start();
+                        .setDuration(ANIMATION_DURATION).start();
             }
             CVAnimator.setColors(details.getMainBtnBaseColor(), 0xffffffff).start();
             mainContainer.animate().translationY(0).setInterpolator(interpolator)
-                    .setDuration((long) (ANIMATION_TIME / 1.5)).setStartDelay(ANIMATION_TIME / 4).start();
-            animateAlpha(mainContainer, 1, (long) (ANIMATION_TIME * 1.2), interpolator);
+                    .setDuration((long) (ANIMATION_DURATION / 1.5)).setStartDelay(ANIMATION_DURATION / 4).start();
+            animateAlpha(mainContainer, 1, (long) (ANIMATION_DURATION * 1.2), interpolator);
         }
     }
 
@@ -328,7 +341,7 @@ public final class FloatingMenu extends FrameLayout {
         v = (float) Math.hypot(cardView.getWidth() / 2,
                 cardView.getHeight() / 2);
         CVAnimator.setColorChangeListener(cardView::setCardBackgroundColor);
-        CVAnimator.setDuration(ANIMATION_TIME);
+        CVAnimator.setDuration(ANIMATION_DURATION);
         once = false;
     }
 
@@ -361,12 +374,18 @@ public final class FloatingMenu extends FrameLayout {
             boolean b = isBright(details.getMainBtnOpenColor());
             mSRCAnimator.setColors(b ? 0xbbffffff : 0xbb000000, b ? 0xbb000000 : 0xbbffffff).start();
         }
+
+        background.setOnClickListener(null);
+        mainBtn.setOnClickListener(mainBtnListener);
     }
 
     private void hide() {
+        background.setOnClickListener(null);
+        mainBtn.setOnClickListener(mainBtnListener);
+        if (events != null) events.onClose();
         clearFocus();
         visible = false;
-        animateAlpha(background, 0);
+        Animations.animateAlpha(background, 0);
         if (!isUseCard())
             mainBtnHide();
         if (details.isAnimatedStatusBar()) {
@@ -384,14 +403,14 @@ public final class FloatingMenu extends FrameLayout {
                 cardView.setVisibility(VISIBLE);
                 ObjectAnimator animator = ObjectAnimator.ofFloat(cardView, "x", "y",
                         arcMotion.getPath(nXc, nYc, oXc, oYc))
-                        .setDuration(ANIMATION_TIME);
+                        .setDuration(ANIMATION_DURATION);
                 ObjectAnimator animator2 = ObjectAnimator.ofFloat(mainBtn, "x", "y",
                         arcMotion.getPath(nXb, nYb, oXb, oYb))
-                        .setDuration(ANIMATION_TIME);
+                        .setDuration(ANIMATION_DURATION);
                 Animator anim = ViewAnimationUtils.createCircularReveal(
                         cardView, cardView.getWidth() / 2, cardView.getHeight() / 2, v, c)
-                        .setDuration(ANIMATION_TIME);
-                animateAlpha(mainBtn, 1, ANIMATION_TIME - 50, interpolator);
+                        .setDuration(ANIMATION_DURATION);
+                animateAlpha(mainBtn, 1, ANIMATION_DURATION - 50, interpolator);
                 animateAlpha(cardView, 0, interpolator);
                 anim.setInterpolator(interpolator);
                 anim.start();
@@ -401,9 +420,9 @@ public final class FloatingMenu extends FrameLayout {
                 animator2.start();
             } else {
                 cardView.animate().alpha(0).scaleY(0).scaleX(0).x(oXc).y(oYc).setInterpolator(interpolator)
-                        .setDuration(ANIMATION_TIME).start();
+                        .setDuration(ANIMATION_DURATION).start();
                 mainBtn.animate().alpha(1).x(oXb).y(oYb).setInterpolator(interpolator)
-                        .setDuration(ANIMATION_TIME).start();
+                        .setDuration(ANIMATION_DURATION).start();
             }
             CVAnimator.setColors(0xffffffff, details.getMainBtnBaseColor()).start();
             animateAlpha(mainContainer, 0, interpolator);
@@ -461,15 +480,28 @@ public final class FloatingMenu extends FrameLayout {
     }
 
     public void liftFor(float height, long duration) {
-        animate().translationY(-height).setDuration(ANIMATION_TIME)
+        animate().translationY(-height).setDuration(ANIMATION_DURATION)
                 .setInterpolator(interpolator).start();
         if (duration > 0)
-            new Handler().postDelayed(() -> animate().translationY(0).setDuration(ANIMATION_TIME)
+            new Handler().postDelayed(() -> animate().translationY(0).setDuration(ANIMATION_DURATION)
                     .setInterpolator(interpolator).start(), duration);
     }
 
     public FloatingMenu setInterpolator(Interpolator interpolator) {
         this.interpolator = interpolator;
         return this;
+    }
+
+    @Nullable
+    Events events = null;
+
+    public void setEvents(@Nullable Events events) {
+        this.events = events;
+    }
+
+    public interface Events {
+        void onOpen();
+
+        void onClose();
     }
 }

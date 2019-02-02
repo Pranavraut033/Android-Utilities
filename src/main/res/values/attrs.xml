@@ -10,10 +10,15 @@
         <attr name="optionBtnColor" format="color" />
         <attr name="optionTexts" format="reference" />
         <attr name="optionIcons" format="reference" />
+        <attr name="cardRadius" format="dimension" />
     </declare-styleable>
 
-    <declare-styleable name="text">
+    <declare-styleable name="TextField">
         <attr name="limit" format="integer" />
         <attr name="hint" format="string" />
+    </declare-styleable>
+    <declare-styleable name="VerticalViewPager">
+        <attr name="pageMargin" format="dimension" />
+        <attr name="pinFirst" format="boolean" />
     </declare-styleable>
 </resources>

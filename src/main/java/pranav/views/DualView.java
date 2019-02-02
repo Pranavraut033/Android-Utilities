@@ -15,7 +15,7 @@ import pranav.utilities.Animations;
 import pranav.utilities.Utilities;
 
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static pranav.utilities.Animations.ANIMATION_TIME;
+import static pranav.utilities.Animations.ANIMATION_DURATION;
 import static pranav.utilities.Animations.DI;
 
 /**
@@ -36,7 +36,7 @@ public class DualView extends Listeners.l1<DualView> {
     private Utilities.Resources res;
     private float fH, fW, tH, tW;
     private Point t = new Point(), f = new Point();
-    private long duration = ANIMATION_TIME;
+    private long duration = ANIMATION_DURATION;
     private TimeInterpolator interpolator = DI;
     private boolean open;
     private Point oF = new Point(), oT = new Point();
@@ -76,7 +76,7 @@ public class DualView extends Listeners.l1<DualView> {
                 .alpha(0).setDuration(duration).setInterpolator(interpolator).start();
         toView.animate().x(oT.x).y(oT.y).scaleX(1).scaleY(1)
                 .alpha(1).setListener(getAnimator()).setInterpolator(interpolator)
-                .setDuration(ANIMATION_TIME).start();
+                .setDuration(ANIMATION_DURATION).start();
     }
 
     public void dismiss() {
@@ -157,7 +157,7 @@ public class DualView extends Listeners.l1<DualView> {
 
         toView.setVisibility(View.GONE);
 
-        color.setObject(tParent);
+        color.setObjects(tParent);
     }
 
     @Override

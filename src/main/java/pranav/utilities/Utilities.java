@@ -1,11 +1,17 @@
 package pranav.utilities;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
@@ -16,17 +22,41 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.StringRes;
 import android.support.v4.app.ActivityCompat;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.widget.FrameLayout;
+import android.widget.PopupMenu;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import pranav.views.DividerItemDecor;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
+@SuppressWarnings({"WeakerAccess", "unused", "SameParameterValue"})
 public class Utilities {
+    private static final String TAG = "Utilities";
+
+    /* Commonly used regex pattern */
+    public static final String EMAIL_PATTERN = "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
 
     public static ViewGroup.LayoutParams MATCH =
             new FrameLayout.LayoutParams(MATCH_PARENT, MATCH_PARENT);
@@ -75,12 +105,90 @@ public class Utilities {
         view.setSystemUiVisibility(flags);
     }
 
+    public static int getSign(double a) {
+        if (a == 0) return 0;
+        if (a > 0) return 1;
+        else return -1;
+    }
+
+    public static void checkAndAsk(Activity activity, int requestCode, String... permissions) {
+        if (!hasPermissions(activity, permissions))
+            ActivityCompat.requestPermissions(activity, permissions, requestCode);
+    }
+
+    public static ViewTreeObserver.OnGlobalLayoutListener addKeyboardToggleListener(Activity a, KeyboardToggleListener listener) {
+        View decorView = a.getWindow().getDecorView().getRootView();
+        ViewTreeObserver.OnGlobalLayoutListener l;
+        decorView.getViewTreeObserver().addOnGlobalLayoutListener(l = () -> {
+            Rect r = new Rect();
+            decorView.getWindowVisibleDisplayFrame(r);
+            int screenHeight = decorView.getHeight();
+
+            // r.bottom is the position above soft keypad or device button.
+            // if keypad is shown, the r.bottom is smaller than that before.
+            int keypadHeight = screenHeight - r.bottom;
+            // 0.15 ratio is perhaps enough to determine keypad height.
+            if (keypadHeight > screenHeight * 0.15)
+                listener.isKeyboardChange(true);
+            else
+                listener.isKeyboardChange(false);
+        });
+        return l;
+    }
+
+    /**
+     * Function to compare multiple object
+     *
+     * @param object1 The object to compare
+     * @param objects the collection of objects that the {@code object1} is being compared
+     * @return false if anyone of the object in the collection doesn't matches to  {@code object1}
+     */
+    public static boolean isEqual_AND(Object object1, Object... objects) {
+        for (Object o : objects) {
+            if (!object1.equals(o)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Function to compare multiple object
+     *
+     * @param object1 The object to compare
+     * @param objects the collection of objects that the {@code object1} is being compared
+     * @return {@code true} if anyone of the object in the collection matches to {@code object1}
+     */
+    public static boolean isEqual_OR(Object object1, Object... objects) {
+        for (Object o : objects) {
+            if (object1.equals(o)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
+    /**
+     * function to get first non-empty string
+     *
+     * @param strings all the alternate string to check before returning
+     * @return first non empty string from <code>strings[]</code>
+     */
+    @NonNull
+    public static String getValidString(String... strings) {
+        for (String s : strings)
+            if (!TextUtils.isEmpty(s)) return s;
+        return "None";
+    }
+
     public static class Resources {
 
         private final Context context;
         private final DisplayMetrics metrics;
 
         public Resources(Context context) {
+            if (context == null) throw new NullPointerException("Given Context is null");
             this.context = context;
             metrics = context.getResources().getDisplayMetrics();
         }
@@ -114,6 +222,10 @@ public class Utilities {
             return dp * metrics.density;
         }
 
+        public int getPx(int dp) {
+            return (int) (dp * metrics.density);
+        }
+
         public Drawable getDrawable(@DrawableRes int id) {
             return Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ?
                     context.getDrawable(id) : context.getResources().getDrawable(id);
@@ -136,6 +248,18 @@ public class Utilities {
 
         public float getDimen(@DimenRes int id) {
             return context.getResources().getDimension(id);
+        }
+
+        public int getRawPixel(@DimenRes int id) {
+            return context.getResources().getDimensionPixelSize(id);
+        }
+
+        public int getRawPixel(@DimenRes int id, int defaultValue) {
+            try {
+                return getRawPixel(id);
+            } catch (Exception e) {
+                return defaultValue;
+            }
         }
 
         public Drawable getDrawable(String imageName) {
@@ -224,5 +348,149 @@ public class Utilities {
         protected abstract void doubleClickAction();
 
         protected abstract void singleClickAction();
+    }
+
+    public static void initRec(DividerItemDecor decor, RecyclerView... recyclerViews) {
+        for (RecyclerView recyclerView : recyclerViews) {
+            recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            if (decor != null)
+                recyclerView.addItemDecoration(decor);
+        }
+    }
+
+    public static void setForceShowIcon(PopupMenu popupMenu) {
+        try {
+            Field[] fields = popupMenu.getClass().getDeclaredFields();
+            for (Field field : fields) {
+                if ("mPopup".equals(field.getName())) {
+                    field.setAccessible(true);
+                    Object menuPopupHelper = field.get(popupMenu);
+                    Class<?> classPopupHelper = Class.forName(menuPopupHelper
+                            .getClass().getName());
+                    Method setForceIcons = classPopupHelper.getMethod(
+                            "setForceShowIcon", boolean.class);
+                    setForceIcons.invoke(menuPopupHelper, true);
+                    break;
+                }
+            }
+        } catch (Throwable e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Checks whether the device currently has a network connection.
+     *
+     * @return true if the device has a network connection, false otherwise.
+     */
+    @SuppressLint("MissingPermission")
+    public static boolean isDeviceOnline(Context context) {
+        if (hasPermissions(context, Manifest.permission.ACCESS_NETWORK_STATE)) {
+            ConnectivityManager connMgr =
+                    (ConnectivityManager) context.getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+            if (connMgr != null) {
+                NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+                return (networkInfo != null && networkInfo.isConnected());
+            }
+        }
+        return false;
+    }
+
+    public static int getStatusBarHeight(Context context) {
+        int result = 0;
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = context.getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
+
+    public abstract static class QuickSort<E> {
+        private E[] es;
+
+        private int partition(int lo, int hi) {
+            int p = lo++;
+            while (lo < hi) {
+                while (getComparision(es[lo], es[p]) >= 0) lo++;
+                while (getComparision(es[hi], es[p]) < 0) hi--;
+                if (lo < hi) swap(lo, hi);
+            }
+            swap(lo, hi);
+            return hi;
+        }
+
+        public final void sort(E[] es) {
+            sort(es, 0, es.length - 1);
+        }
+
+        public final void sort(E[] es, int lo, int hi) {
+            this.es = es;
+            this.qSort(es, lo, hi);
+        }
+
+        public void qSort(E[] es, int lo, int hi) {
+            if (lo < hi) {
+                int p = partition(lo, hi);
+                qSort(es, lo, p);
+                qSort(es, p + 1, hi);
+            }
+        }
+
+        private void swap(int a, int b) {
+            E temp = es[b];
+            es[b] = es[a];
+            es[a] = temp;
+        }
+
+        /**
+         * @param object0 Object 1
+         * @param object1 Object 2
+         * @return integer -<br>1) <strong>Greater than 0</strong> if <code>{@link E object0}</code>
+         * has <strong>more weight</strong> than <code>{@link E object1}</code><br>2) <strong>Less
+         * than 0</strong> if <code>{@link E object0}</code> has <strong>less weight</strong>
+         * than <code>{@link E object1}</code><br>3) <strong>0</strong> if both Object are of
+         * <strong>equal</strong> weight
+         */
+        protected abstract int getComparision(E object0, E object1);
+    }
+
+    public static void copyFileUsingStream(File source, File dest) throws IOException {
+        InputStream is = null;
+        OutputStream os = null;
+        try {
+            is = new FileInputStream(source);
+            os = new FileOutputStream(dest);
+            byte[] buffer = new byte[1024];
+            int length;
+            while ((length = is.read(buffer)) > 0) {
+                os.write(buffer, 0, length);
+            }
+        } finally {
+            if (is != null) is.close();
+            if (os != null) os.close();
+        }
+    }
+
+    public static byte[] fileToByteArray(File f) {
+        byte[] bytes = new byte[(int) f.length()];
+        try {
+            FileInputStream fileInputStream = new FileInputStream(f);
+            fileInputStream.read(bytes);
+        } catch (FileNotFoundException e) {
+            System.out.println("File Not Found.");
+            e.printStackTrace();
+        } catch (IOException e) {
+            System.out.println("Error Reading The File.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.out.println("Unknown Error");
+            e.printStackTrace();
+        }
+        return bytes;
+    }
+
+    public interface KeyboardToggleListener {
+        void isKeyboardChange(boolean isVisible);
     }
 }

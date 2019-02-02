@@ -18,7 +18,7 @@ import com.preons.pranav.utilities.R;
 
 import pranav.utilities.Utilities;
 
-import static pranav.utilities.Animations.ANIMATION_TIME;
+import static pranav.utilities.Animations.ANIMATION_DURATION;
 import static pranav.utilities.Animations.DI;
 import static pranav.utilities.Utilities.Resources.getColoredDrawable;
 
@@ -35,7 +35,7 @@ public final class FMItem extends LinearLayout {
     private TextView textView;
     private FloatingActionButton actionButton;
     private ImageView imageView;
-    private long d = ANIMATION_TIME * 2 / 3;
+    private long d = ANIMATION_DURATION * 2 / 3;
     private boolean useCard;
 
     FMItem(Context context, boolean useCard) {

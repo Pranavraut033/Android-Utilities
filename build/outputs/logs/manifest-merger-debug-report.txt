@@ -1,37 +1,39 @@
 -- Merging decision tree log ---
 manifest
-ADDED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+ADDED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
 	package
-		ADDED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:11-48
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
+		ADDED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:11-48
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+		ADDED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
 	android:versionCode
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+		ADDED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
 application
-ADDED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml:3:5-20
+ADDED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml:3:5-20
 uses-sdk
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+		ADDED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-		ADDED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
-		INJECTED from C:\Users\Pranav\AndroidStudioProjects\QRCodeProtection\Utilities\src\main\AndroidManifest.xml
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+		ADDED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml
+		INJECTED from E:\Documents\AndroidStudioProjects\ProVeteran\Utilities\src\main\AndroidManifest.xml

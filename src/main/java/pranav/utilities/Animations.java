@@ -10,15 +10,22 @@ import android.os.Build;
 import android.os.Handler;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Window;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.Interpolator;
-import android.view.animation.OvershootInterpolator;
 import android.view.animation.Transformation;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import pranav.views.L1;
 import pranav.views.Listeners;
@@ -28,12 +35,13 @@ import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
 import static pranav.utilities.Utilities.isVisible;
 
 public class Animations {
-    public static final long ANIMATION_TIME = 250;
+
+    public static final long ANIMATION_DURATION = 250;
     public static final long USER_FRIENDLY_DELAY = 2500;
 
-    public static final Interpolator DI = new OvershootInterpolator(.8f);
+    public static final Interpolator DI = new AccelerateDecelerateInterpolator();
 
-    public static void animateAlpha(View view) {
+    public static void toggleVisibility(View view) {
         animateAlpha(view, isVisible(view) ? 0 : 1);
     }
 
@@ -42,7 +50,7 @@ public class Animations {
     }
 
     public static void animateAlpha(final View view, final float to, @Nullable TimeInterpolator interpolator) {
-        animateAlpha(view, to, ANIMATION_TIME, interpolator);
+        animateAlpha(view, to, ANIMATION_DURATION, interpolator);
     }
 
     public static void animateAlpha(View view, float to, long animationTime, @Nullable TimeInterpolator interpolator) {
@@ -50,10 +58,11 @@ public class Animations {
     }
 
     public static void animateAlpha(final View view, final float to, long duration, @Nullable TimeInterpolator interpolator, long delay) {
+        if (to == view.getAlpha()) return;
         if (!isVisible(view))
             view.setVisibility(View.VISIBLE);
         view.setAlpha(Math.abs(1 - to));
-        view.animate().alpha(to).setDuration(ANIMATION_TIME).setListener(new Animator.AnimatorListener() {
+        view.animate().alpha(to).setDuration(ANIMATION_DURATION).setListener(new Animator.AnimatorListener() {
             @Override
             public void onAnimationStart(Animator animation) {
             }
@@ -75,19 +84,19 @@ public class Animations {
 
     public static void animateRotate(View view, float angle, Interpolator interpolator) {
         ValueAnimator valueAnimator = ObjectAnimator.ofFloat(view, "Rotation", 0, angle);
-        valueAnimator.setDuration(ANIMATION_TIME);
+        valueAnimator.setDuration(ANIMATION_DURATION);
         valueAnimator.setInterpolator(interpolator);
         valueAnimator.start();
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
-    public static class AnimatingParameter extends Listeners.l2<AnimatingParameter> {
+    public static class AnimatingDimensions extends Listeners.l2<AnimatingDimensions> {
         public static final int ANIMATE_HEIGHT = 0;
         public static final int ANIMATE_WIDTH = 1;
         private final View view;
         private final float initialDimen;
         private final float targetDimen;
-        private boolean toInit = true;
+        private boolean toFinal = true;
         private int mode = ANIMATE_HEIGHT;
         private Interpolator interpolator = DI;
         private boolean running;
@@ -95,13 +104,13 @@ public class Animations {
         private long duration = -1;
         private long delay;
 
-        public AnimatingParameter(View view, float initialDimen, float targetDimen) {
+        public AnimatingDimensions(View view, float initialDimen, float targetDimen) {
             this(view, true, initialDimen, targetDimen);
         }
 
-        public AnimatingParameter(View view, boolean toInit, float initialDimen, float targetDimen) {
+        public AnimatingDimensions(View view, boolean toFinal, float initialDimen, float targetDimen) {
             this.view = view;
-            this.toInit = toInit;
+            this.toFinal = toFinal;
             this.initialDimen = (int) (initialDimen <= 0 ? 1 : initialDimen);
             this.targetDimen = (int) targetDimen;
         }
@@ -119,26 +128,26 @@ public class Animations {
                 oldH = newH;
                 newH = t;
             }
-            new AnimatingParameter(v, oldH, newH).animate(!b);
+            new AnimatingDimensions(v, oldH, newH).animate(!b);
         }
 
-        public AnimatingParameter animate(boolean b) {
-            this.toInit = b;
-            return animate();
+        public void animate(boolean show) {
+            this.toFinal = show;
+            animate();
         }
 
-        public AnimatingParameter animate() {
+        public void animate() {
             final Animation animation;
             switch (mode) {
                 case ANIMATE_HEIGHT:
-                    view.getLayoutParams().height = (int) (toInit ? initialDimen : targetDimen);
+                    view.getLayoutParams().height = (int) (toFinal ? initialDimen : targetDimen);
                     break;
                 case ANIMATE_WIDTH:
-                    view.getLayoutParams().width = (int) (toInit ? initialDimen : targetDimen);
+                    view.getLayoutParams().width = (int) (toFinal ? initialDimen : targetDimen);
                     break;
             }
             if (!isVisible(view)) view.setVisibility(View.VISIBLE);
-            if (toInit) {
+            if (toFinal) {
                 animation = new Animation() {
                     @Override
                     protected void applyTransformation(float interpolatedTime, Transformation t) {
@@ -164,7 +173,6 @@ public class Animations {
                     }
                 };
             } else {
-
                 animation = new Animation() {
                     @Override
                     protected void applyTransformation(float interpolatedTime, Transformation t) {
@@ -193,17 +201,19 @@ public class Animations {
             animation.setAnimationListener(getAnimationListener());
             animation.setDuration(duration == -1 ? (long) (targetDimen - initialDimen /
                     view.getContext().getResources().getDisplayMetrics().density) : duration);
-            new Handler().postDelayed(() -> view.startAnimation(animation), delay);
-            return this;
+            new Handler().postDelayed(() -> {
+                view.startAnimation(animation);
+                toFinal = !toFinal;
+            }, delay);
         }
 
-        public AnimatingParameter setInterpolator(Interpolator interpolator) {
+        public AnimatingDimensions setInterpolator(Interpolator interpolator) {
             this.interpolator = interpolator;
             return this;
         }
 
-        public void setToInit(boolean toInit) {
-            this.toInit = toInit;
+        public void setToFinal(boolean toFinal) {
+            this.toFinal = toFinal;
         }
 
         @a
@@ -211,7 +221,7 @@ public class Animations {
             return mode;
         }
 
-        public AnimatingParameter setMode(@a int mode) {
+        public AnimatingDimensions setMode(@a int mode) {
             this.mode = mode;
             return this;
         }
@@ -220,14 +230,18 @@ public class Animations {
             return running;
         }
 
-        public AnimatingParameter setDuration(long duration) {
+        public AnimatingDimensions setDuration(long duration) {
             this.duration = duration;
             return this;
         }
 
-        public AnimatingParameter setDelay(long delay) {
+        public AnimatingDimensions setDelay(long delay) {
             this.delay = delay;
             return this;
+        }
+
+        public boolean toFinal() {
+            return toFinal;
         }
 
         @IntDef(value = {ANIMATE_HEIGHT, ANIMATE_WIDTH})
@@ -240,7 +254,7 @@ public class Animations {
 
         private final Window window;
         TimeInterpolator interpolator;
-        private long duration = ANIMATION_TIME;
+        private long duration = ANIMATION_DURATION;
         private boolean lightStatusBar;
 
         public AnimateStatusBar(Window window) {
@@ -259,15 +273,16 @@ public class Animations {
             animatingColor.start();
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         public synchronized void setLightStatusBar() {
             lightStatusBar = true;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) Utilities.setLightStatusBar(window);
+            pranav.utilities.Utilities.setLightStatusBar(window);
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.M)
         public synchronized void clearLightStatusBar() {
             lightStatusBar = false;
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-                Utilities.clearLightStatusBar(window);
+            pranav.utilities.Utilities.clearLightStatusBar(window);
         }
 
         public AnimateStatusBar setInterpolator(TimeInterpolator interpolator) {
@@ -291,6 +306,11 @@ public class Animations {
         public void setDuration(long duration) {
             this.duration = duration;
         }
+
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        public int getCurrentStatusColor() {
+            return window.getStatusBarColor();
+        }
     }
 
     @SuppressWarnings({"unused", "WeakerAccess"})
@@ -301,9 +321,8 @@ public class Animations {
         private int colorFrom;
         @Nullable
         private ColorChangeListener colorChangeListener;
-        @Nullable
-        private View object;
-        private long duration = ANIMATION_TIME;
+        private ArrayList<View> objects = new ArrayList<>();
+        private long duration = ANIMATION_DURATION;
         private long delay = 0;
         private TimeInterpolator interpolator;
         private int value;
@@ -317,13 +336,35 @@ public class Animations {
         public AnimatingColor(AnimatingColor animatingColor) {
             setColors(animatingColor.colorTo, animatingColor.colorFrom)
                     .setDelay(animatingColor.delay).setDuration(animatingColor.duration)
-                    .setObject(animatingColor.object).setColorChangeListener(animatingColor.colorChangeListener);
+                    .setColorChangeListener(animatingColor.colorChangeListener);
+            objects = animatingColor.objects;
             setChain(this);
         }
 
         public AnimatingColor(int colorFrom, int colorTo) {
             this.colorFrom = value = colorFrom;
             this.colorTo = colorTo;
+        }
+
+        public AnimatingColor(int colorTo, View... objects) {
+            this.colorTo = colorTo;
+            setObjects(objects);
+        }
+
+        public void animateTo() {
+            for (View v : objects) {
+                int i = 0;
+                if (v instanceof TextView)
+                    i = ((TextView) v).getCurrentTextColor();
+                else if (v instanceof Toolbar) {
+                    Toolbar v1 = (Toolbar) v;
+                    for (int j = 0; j < v1.getChildCount(); j++)
+                        if (v1.getChildAt(j) instanceof TextView)
+                            i = ((TextView) v1.getChildAt(j)).getCurrentTextColor();
+                } else
+                    i = v.getSolidColor();
+                setColors(i, colorTo).start();
+            }
         }
 
         public void start(int colorFrom, int colorTo) {
@@ -334,10 +375,18 @@ public class Animations {
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
             colorAnimation.addUpdateListener(animator -> {
                 value = (int) animator.getAnimatedValue();
-                if (object != null) {
-                    if (object instanceof ImageView)
-                        ((ImageView) object).setColorFilter(value, PorterDuff.Mode.SRC_ATOP);
-                    else object.setBackgroundColor(value);
+                if (!objects.isEmpty()) {
+                    for (View o : objects)
+                        if (o != null) {
+                            if (o instanceof ImageView)
+                                ((ImageView) o).setColorFilter(value, PorterDuff.Mode.SRC_ATOP);
+                            else if (o instanceof TextView)
+                                ((TextView) o).setTextColor(value);
+                            else if (o instanceof Toolbar)
+                                ((Toolbar) o).setTitleTextColor(value);
+                            else
+                                o.setBackgroundColor(value);
+                        }
                 }
                 if (colorChangeListener != null) colorChangeListener.onColorChanged(value);
             });
@@ -391,12 +440,19 @@ public class Animations {
         }
 
         @Nullable
-        public View getObject() {
-            return object;
+        public View[] getObjects() {
+            return objects.toArray(new View[objects.size()]);
         }
 
-        public AnimatingColor setObject(@Nullable View object) {
-            this.object = object;
+        public AnimatingColor removeObjects(View... objects) {
+            if (objects.length != 0)
+                this.objects.removeAll(Arrays.asList(objects));
+            return this;
+        }
+
+        public AnimatingColor setObjects(View... objects) {
+            if (objects.length != 0)
+                this.objects.addAll(Arrays.asList(objects));
             return this;
         }
 
@@ -405,4 +461,45 @@ public class Animations {
         }
     }
 
+    public static class Utilities {
+        public static class ZoomOutPageTransformer implements ViewPager.PageTransformer {
+            private static final float MIN_SCALE = 0.85f;
+            private static final float MIN_ALPHA = 0.5f;
+
+            public void transformPage(@NonNull View view, float position) {
+                int pageWidth = view.getWidth();
+                int pageHeight = view.getHeight();
+
+                if (position < -1) { // [-Infinity,-1)
+                    // This page is way off-screen to the left.
+                    view.setAlpha(0);
+
+                } else if (position <= 1) { // [-1,1]
+                    // Modify the default slide transition to shrink the page as well
+                    float scaleFactor = Math.max(MIN_SCALE, 1 - Math.abs(position));
+                    float vertMargin = pageHeight * (1 - scaleFactor) / 2;
+                    float horzMargin = pageWidth * (1 - scaleFactor) / 2;
+                    if (position < 0) {
+                        view.setTranslationX(horzMargin - vertMargin / 2);
+                    } else {
+                        view.setTranslationX(-horzMargin + vertMargin / 2);
+                    }
+
+                    // Scale the page down (between MIN_SCALE and 1)
+                    view.setScaleX(scaleFactor);
+                    view.setScaleY(scaleFactor);
+
+                    // Fade the page relative to its size.
+                    view.setAlpha(MIN_ALPHA +
+                            (scaleFactor - MIN_SCALE) /
+                                    (1 - MIN_SCALE) * (1 - MIN_ALPHA));
+
+                } else { // (1,+Infinity]
+                    // This page is way off-screen to the right.
+                    view.setAlpha(0);
+                }
+            }
+        }
+
+    }
 }

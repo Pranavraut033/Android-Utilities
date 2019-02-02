@@ -4,15 +4,15 @@ import android.view.animation.Animation;
 
 public interface L2 {
 
-    interface EndAnimation extends L1 {
+    interface EndAnimation extends L2 {
         void onAnimationEnd(Animation animation);
     }
 
-    interface StartAnimation extends L1 {
+    interface StartAnimation extends L2 {
         void onAnimationStart(Animation animation);
     }
 
-    interface RepeatAnimation extends L1 {
+    interface RepeatAnimation extends L2 {
         void onAnimationRepeat(Animation animation);
     }
 

@@ -14,4 +14,5 @@
     <dimen name="pad">@dimen/dPad</dimen>
     <dimen name="mar">2dp</dimen>
     <dimen name="pad1">4dp</dimen>
+    <dimen name="pad6dp">6dp</dimen>
 </resources>

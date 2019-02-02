@@ -75,8 +75,14 @@ public final class TextField<E extends EditText> extends FrameLayout {
         init();
     }
 
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+        if (lt != null) lt.setVisibility(VISIBLE);
+        textField.setVisibility(visibility);
+    }
 
-    private void init() {
+    public void init() {
         lt = new TextInputLayout(this.c, a);
         lt.addView(textField);
         addView(lt);
@@ -99,11 +105,8 @@ public final class TextField<E extends EditText> extends FrameLayout {
                 setLimitText(s.length());
             }
         });
-        textField.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (ul) ltv.setTextColor(hasFocus ? 0x8a000000 : 0x61000000);
-            }
+        textField.setOnFocusChangeListener((v, hasFocus) -> {
+            if (ul) ltv.setTextColor(hasFocus ? 0x8a000000 : 0x61000000);
         });
     }
 
@@ -117,9 +120,9 @@ public final class TextField<E extends EditText> extends FrameLayout {
     private void a() {
         ltv = new TextView(new ContextThemeWrapper(c, R.style.text), null, R.style.text);
 
-        TypedArray typedArray = c.obtainStyledAttributes(a, R.styleable.text);
-        String s = typedArray.getString(R.styleable.text_hint);
-        int i = typedArray.getInteger(R.styleable.text_limit, -1);
+        TypedArray typedArray = c.obtainStyledAttributes(a, R.styleable.TextField);
+        String s = typedArray.getString(R.styleable.TextField_hint);
+        int i = typedArray.getInteger(R.styleable.TextField_limit, -1);
         setUl(i > 0);
         if (lt != null) lt.setHint(s);
         else setHint(s);

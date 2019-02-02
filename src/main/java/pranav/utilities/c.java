@@ -15,4 +15,5 @@ class c {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("ddMMyyhhmm", Locale.ENGLISH);
     public static final float D_PADDING = 6;
+
 }

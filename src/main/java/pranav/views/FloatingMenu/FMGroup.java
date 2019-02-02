@@ -12,7 +12,7 @@ import com.preons.pranav.utilities.R;
 
 import pranav.utilities.Utilities;
 
-import static pranav.utilities.Animations.ANIMATION_TIME;
+import static pranav.utilities.Animations.ANIMATION_DURATION;
 import static pranav.utilities.Animations.DI;
 import static pranav.utilities.Utilities.Resources.getColoredDrawable;
 
@@ -98,16 +98,16 @@ final class FMGroup extends LinearLayout {
     }
 
     void animateOpen() {
-        textView.animate().scaleX(1).scaleY(1).setDuration(ANIMATION_TIME)
+        textView.animate().scaleX(1).scaleY(1).setDuration(ANIMATION_DURATION)
                 .setStartDelay(100)
                 .setInterpolator(DI);
-        imageView.animate().scaleX(1).setDuration(ANIMATION_TIME)
+        imageView.animate().scaleX(1).setDuration(ANIMATION_DURATION)
                 .setStartDelay(100)
                 .setInterpolator(DI);
     }
 
     void animateClose() {
-        textView.animate().scaleY(0).scaleX(0).setDuration(ANIMATION_TIME).setInterpolator(DI);
-        imageView.animate().scaleX(0).setDuration(ANIMATION_TIME).setInterpolator(DI);
+        textView.animate().scaleY(0).scaleX(0).setDuration(ANIMATION_DURATION).setInterpolator(DI);
+        imageView.animate().scaleX(0).setDuration(ANIMATION_DURATION).setInterpolator(DI);
     }
 }
