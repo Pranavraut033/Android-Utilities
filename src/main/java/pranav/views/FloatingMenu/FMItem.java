@@ -4,9 +4,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
-import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.animation.DecelerateInterpolator;
@@ -14,8 +11,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.preons.pranav.utilities.R;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
 import pranav.utilities.Utilities;
 
 import static pranav.utilities.Animations.ANIMATION_DURATION;
@@ -55,7 +55,9 @@ public final class FMItem extends LinearLayout {
         actionButton = findViewById(R.id.optionFab);
         imageView = findViewById(R.id.menuIcon);
         if (useCard) {
-            actionButton.setVisibility(GONE);
+            // TODO: 03-02-19 fix
+//            actionButton.setAlpha(GONE);
+            actionButton.setAlpha(0);
             LayoutParams params = new LayoutParams(textView.getLayoutParams());
             params.setMargins(0, 0, 0, 0);
             textView.setLayoutParams(params);

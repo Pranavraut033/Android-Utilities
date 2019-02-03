@@ -4,14 +4,18 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 
+import com.preons.pranav.utilities.R;
+
 import java.util.ArrayList;
+
+import androidx.appcompat.widget.AppCompatEditText;
 
 /**
  * Created on 23-01-2018 at 18:21 by Pranav Raut.
  * For Notes
  */
 
-public class PatternEditView extends android.support.v7.widget.AppCompatEditText {
+public class PatternEditView extends AppCompatEditText {
     private final AttributeSet attrs;
     private static final String TAG = "PatternEditView";
 
@@ -22,7 +26,7 @@ public class PatternEditView extends android.support.v7.widget.AppCompatEditText
     }
 
     public PatternEditView(Context context, AttributeSet attrs) {
-        this(context, attrs, android.support.v7.appcompat.R.attr.editTextStyle);
+        this(context, attrs, R.attr.editTextStyle);
     }
 
     public PatternEditView(Context context, AttributeSet attrs, int defStyleAttr) {

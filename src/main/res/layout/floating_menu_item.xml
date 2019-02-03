@@ -21,11 +21,11 @@
         android:layout_marginBottom="@dimen/pad16dp"
         android:layout_marginEnd="@dimen/dPad"
         android:layout_marginStart="@dimen/dPad"
-        android:background="?android:selectableItemBackground"
+        android:background="?attr/selectableItemBackground"
         android:gravity="center_vertical"
         android:padding="@dimen/dPad" />
 
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/optionFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

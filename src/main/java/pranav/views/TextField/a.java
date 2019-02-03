@@ -1,6 +1,6 @@
 package pranav.views.TextField;
 
-import android.support.annotation.IntDef;
+import androidx.annotation.IntDef;
 import android.text.InputType;
 
 /**

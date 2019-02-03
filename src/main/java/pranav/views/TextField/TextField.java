@@ -4,25 +4,28 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
-import android.support.v7.view.ContextThemeWrapper;
 import android.text.Editable;
 import android.text.InputFilter;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.preons.pranav.utilities.R;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.view.ContextThemeWrapper;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
+import static pranav.utilities.DataBaseHelper.SQLiteQuery.TAG;
 
 
 /**
@@ -39,10 +42,7 @@ public final class TextField<E extends EditText> extends FrameLayout {
     private static final String COLOR = "c";
 
     private final Context c;
-    @Nullable
-    private final AttributeSet a;
-    @Nullable
-    private TextInputLayout lt = null;
+    private TextInputLayout lt;
     private TextView ltv;
     private boolean ul;
     private int cr;
@@ -51,11 +51,11 @@ public final class TextField<E extends EditText> extends FrameLayout {
     private int count;
     private int limit;
     @NonNull
-    private final E textField;
-
-    public TextField(Context c) {
-        this(c, null, null);
-    }
+    private E textField;
+    private int styleL = -1;
+    private int styleT = -1;
+    private String initHint;
+    private int i;
 
     public TextField(Context c, E textField) {
         this(c, null, textField);
@@ -69,10 +69,12 @@ public final class TextField<E extends EditText> extends FrameLayout {
     public TextField(Context c, @Nullable AttributeSet a, @Nullable E textField) {
         super(c, a);
         this.c = c;
-        this.a = a;
-        this.textField = textField == null ? (E) new TextInputEditText(c, a) : textField;
-        a();
-        init();
+        a(a);
+        textField = textField == null ?
+                (styleT != -1 ? (E) new TextInputEditText(c, a, styleT) :
+                        (E) new TextInputEditText(c, a))
+                : textField;
+        init(textField, a);
     }
 
     @Override
@@ -82,11 +84,12 @@ public final class TextField<E extends EditText> extends FrameLayout {
         textField.setVisibility(visibility);
     }
 
-    public void init() {
-        lt = new TextInputLayout(this.c, a);
-        lt.addView(textField);
+    public void init(E textField, AttributeSet attrs) {
+        this.textField = textField;
+        lt = styleL != -1 ? new TextInputLayout(this.c, attrs, styleL) :
+                new TextInputLayout(this.c, attrs);
         addView(lt);
-        addView(ltv);
+        lt.addView(textField);
         textField.setFocusable(true);
         textField.setFocusableInTouchMode(true);
         textField.addTextChangedListener(new TextWatcher() {
@@ -108,6 +111,9 @@ public final class TextField<E extends EditText> extends FrameLayout {
         textField.setOnFocusChangeListener((v, hasFocus) -> {
             if (ul) ltv.setTextColor(hasFocus ? 0x8a000000 : 0x61000000);
         });
+        setUl(i > 0);
+        setHint(initHint);
+        setLimit(i);
     }
 
     @Override
@@ -117,23 +123,21 @@ public final class TextField<E extends EditText> extends FrameLayout {
         return super.requestFocus(direction, previouslyFocusedRect);
     }
 
-    private void a() {
+    private void a(AttributeSet a) {
         ltv = new TextView(new ContextThemeWrapper(c, R.style.text), null, R.style.text);
-
+        addView(ltv);
         TypedArray typedArray = c.obtainStyledAttributes(a, R.styleable.TextField);
-        String s = typedArray.getString(R.styleable.TextField_hint);
-        int i = typedArray.getInteger(R.styleable.TextField_limit, -1);
-        setUl(i > 0);
-        if (lt != null) lt.setHint(s);
-        else setHint(s);
-        setLimit(i);
+        initHint = typedArray.getString(R.styleable.TextField_hint);
+        styleT = typedArray.getResourceId(R.styleable.TextField_styleText, -1);
+        styleL = typedArray.getResourceId(R.styleable.TextField_styleLayout, -1);
+        i = typedArray.getInteger(R.styleable.TextField_limit, -1);
         typedArray.recycle();
         if (ul) setLimitText(0);
     }
 
     public void setHint(@Nullable CharSequence hint) {
-        textField.setHint(hint);
         if (lt != null) lt.setHint(hint);
+        else textField.setHint(hint);
     }
 
     @Override
@@ -171,10 +175,16 @@ public final class TextField<E extends EditText> extends FrameLayout {
         layoutParams.width = MATCH_PARENT;
     }
 
+    @SuppressWarnings({"unchecked", "ConstantConditions"})
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        if (child instanceof EditText || child instanceof TextInputLayout) setDVal(params);
-        super.addView(child, index, params);
+        if (child instanceof EditText) {
+            removeView(lt);
+            init((E) child, null);
+        } else {
+            setDVal(params);
+            super.addView(child, index, params);
+        }
     }
 
     @Override

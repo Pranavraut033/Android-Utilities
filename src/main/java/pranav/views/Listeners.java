@@ -1,14 +1,11 @@
 package pranav.views;
 
 import android.animation.Animator;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.view.animation.Animation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import pranav.views.L1;
-import pranav.views.L2;
 
 @SuppressWarnings({"unused", "WeakerAccess"})
 public class Listeners {

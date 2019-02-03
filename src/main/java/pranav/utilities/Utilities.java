@@ -2,7 +2,6 @@ package pranav.utilities;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -14,20 +13,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
-import android.support.annotation.ColorInt;
-import android.support.annotation.ColorRes;
-import android.support.annotation.DimenRes;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.StringRes;
-import android.support.v4.app.ActivityCompat;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -45,8 +32,19 @@ import java.io.OutputStream;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 
+import androidx.annotation.ColorInt;
+import androidx.annotation.ColorRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import pranav.views.DividerItemDecor;
 
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
@@ -111,12 +109,12 @@ public class Utilities {
         else return -1;
     }
 
-    public static void checkAndAsk(Activity activity, int requestCode, String... permissions) {
+    public static void checkAndAsk(AppCompatActivity activity, int requestCode, String... permissions) {
         if (!hasPermissions(activity, permissions))
             ActivityCompat.requestPermissions(activity, permissions, requestCode);
     }
 
-    public static ViewTreeObserver.OnGlobalLayoutListener addKeyboardToggleListener(Activity a, KeyboardToggleListener listener) {
+    public static ViewTreeObserver.OnGlobalLayoutListener addKeyboardToggleListener(AppCompatActivity a, KeyboardToggleListener listener) {
         View decorView = a.getWindow().getDecorView().getRootView();
         ViewTreeObserver.OnGlobalLayoutListener l;
         decorView.getViewTreeObserver().addOnGlobalLayoutListener(l = () -> {

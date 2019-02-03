@@ -16,7 +16,7 @@
         android:padding="@dimen/pad12dp"
         android:text="@string/choose_color" />
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:background="#fff1f1f1"
         android:layout_marginTop="-4dp"
@@ -29,5 +29,5 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center" />
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 </LinearLayout>

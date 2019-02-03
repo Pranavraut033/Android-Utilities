@@ -1,15 +1,15 @@
 package pranav.views.FloatingMenu;
 
-import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
+import androidx.appcompat.app.AppCompatActivity;
 import android.view.View.OnClickListener;
 import android.view.Window;
 
@@ -57,7 +57,7 @@ public final class FMHelper {
 
     public FMHelper(int numOptions, Context context) {
         this.numOptions = numOptions;
-        window = ((Activity) context).getWindow();
+        window = ((AppCompatActivity) context).getWindow();
         resources = new Utilities.Resources(context);
         optionBtnRes = new Drawable[numOptions];
         optionBtnColors = new int[numOptions];

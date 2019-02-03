@@ -1,7 +1,7 @@
 package pranav.utilities;
 
-import android.support.annotation.MenuRes;
-import android.support.annotation.NonNull;
+import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;

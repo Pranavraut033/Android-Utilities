@@ -16,6 +16,8 @@
     <declare-styleable name="TextField">
         <attr name="limit" format="integer" />
         <attr name="hint" format="string" />
+        <attr name="styleText" format="reference" />
+        <attr name="styleLayout" format="reference" />
     </declare-styleable>
     <declare-styleable name="VerticalViewPager">
         <attr name="pageMargin" format="dimension" />

@@ -1,11 +1,11 @@
 package pranav.views;
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.Menu;
@@ -52,7 +52,7 @@ public class MiniToolBar extends FrameLayout {
         mProgressBar.setMax(MAX);
     }
 
-    public void populate(@NonNull Activity activity, int id, String s) {
+    public void populate(@NonNull AppCompatActivity activity, int id, String s) {
         mBackButton.setOnClickListener(v -> activity.onBackPressed());
         mPopMenu = new PopMenu(id, findViewById(R.id.moreOption), PopMenu.LONG_PRESS_CLICK, R.id.anchor) {
             @Override
