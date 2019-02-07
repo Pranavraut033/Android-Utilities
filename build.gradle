@@ -34,15 +34,10 @@ configurations {
     cleanedAnnotations
     compile.exclude group: 'org.jetbrains' , module:'annotations'
 }
-dependencies {
-    androidTestImplementation('androidx.test.espresso:espresso-core:3.1.0-alpha4', {
-        exclude group: 'com.android.support', module: 'support-annotations'
-    })
 
+dependencies {
     implementation "androidx.legacy:legacy-support-v4:1.0.0"
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "androidx.appcompat:appcompat:${supportLibVersion}"
     implementation 'com.google.android.material:material:1.1.0-alpha03'
     implementation 'androidx.cardview:cardview:1.0.0'
-    testImplementation 'junit:junit:4.12'
 }
