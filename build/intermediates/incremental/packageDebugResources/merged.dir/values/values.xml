@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryVariant">#303F9F</color>
+    <color name="colorSecondary">#FF4081</color>
+    <color name="fab_grey">#90bdbdbd</color>
+    <color name="g_blue">#4285f4</color>
+    <color name="g_green">#34a853</color>
+    <color name="g_red">#ea4334</color>
+    <color name="g_yellow">#fbbc05</color>
+    <color name="grey">#bdbdbd</color>
+    <color name="transparent">#0000</color>
+    <color name="white">#fff</color>
+    <dimen name="button">48dp</dimen>
+    <dimen name="buttonSize">56dp</dimen>
+    <dimen name="dPad">8dp</dimen>
+    <dimen name="mar">2dp</dimen>
+    <dimen name="menuIcon">40dp</dimen>
+    <dimen name="pad">@dimen/dPad</dimen>
+    <dimen name="pad1">4dp</dimen>
+    <dimen name="pad12dp">12dp</dimen>
+    <dimen name="pad16dp">16dp</dimen>
+    <dimen name="pad28dp">28dp</dimen>
+    <dimen name="pad2dp">2dp</dimen>
+    <dimen name="pad32dp">32dp</dimen>
+    <dimen name="pad4dp">4dp</dimen>
+    <dimen name="pad6dp">6dp</dimen>
+    <dimen name="square_radius">5dp</dimen>
+    <dimen name="textSize">12sp</dimen>
+    <string name="background">Background</string>
+    <string name="choose_color">Choose Color</string>
+    <string name="go_back">go back</string>
+    <string name="menu_icon">MenuIcon</string>
+    <string name="more_option">more option</string>
+    <style name="bottomEnd">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">end|bottom</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
+    <style name="button" parent="Base.Widget.AppCompat.ImageButton">
+        <item name="android:layout_height">@dimen/buttonSize</item>
+        <item name="android:layout_width">@dimen/buttonSize</item>
+        <item name="android:padding">@dimen/pad1</item>
+        <item name="elevation">2dp</item>
+        <item name="android:layout_margin">@dimen/mar</item>
+    </style>
+    <style name="circular" parent="button">
+        <item name="background">@drawable/circular</item>
+        <item name="android:src">@drawable/circular</item>
+    </style>
+    <style name="square" parent="button">
+        <item name="background">@drawable/square</item>
+        <item name="android:src">@drawable/square</item>
+    </style>
+    <style name="text">
+        <item name="android:textSize">@dimen/textSize</item>
+        <item name="android:gravity">end</item>
+        <item name="android:paddingRight">@dimen/dPad</item>
+        <item name="android:paddingLeft">@dimen/dPad</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_gravity">end</item>
+
+    </style>
+    <declare-styleable name="FloatingMenu">
+        <attr format="integer" name="numOption"/>
+        <attr format="boolean" name="useCard"/>
+        <attr format="color" name="statusBarColor"/>
+        <attr format="integer" name="backgroundColor"/>
+        <attr format="color" name="baseOptionColor"/>
+        <attr format="reference" name="baseBtnIcons"/>
+        <attr format="color" name="optionBtnColor"/>
+        <attr format="reference" name="optionTexts"/>
+        <attr format="reference" name="optionIcons"/>
+        <attr format="dimension" name="cardRadius"/>
+    </declare-styleable>
+    <declare-styleable name="TextField">
+        <attr format="string" name="initialText"/>
+        <attr format="integer" name="limit"/>
+        <attr format="string" name="hint"/>
+        <attr format="string" name="helperText"/>
+        <attr format="boolean" name="singleLine"/>
+        <attr format="enum" name="textFieldStyle">
+            <enum name="outline" value="0"/>
+            <enum name="filled" value="1"/>
+            <enum name="outlineDense" value="2"/>
+            <enum name="filledDense" value="3"/>
+        </attr>
+
+        <attr format="enum" name="inputType">
+            <enum name="text" value="0"/>
+            <enum name="number" value="1"/>
+            <enum name="password" value="2"/>
+            <enum name="phone" value="3"/>
+            <enum name="time" value="4"/>
+            <enum name="date" value="5"/>
+            <enum name="datetime" value="6"/>
+            <enum name="postalAddress" value="7"/>
+            <enum name="numberDecimal" value="8"/>
+            <enum name="numberPassword" value="9"/>
+            <enum name="numberSigned" value="10"/>
+            <enum name="textAutoComplete" value="11"/>
+            <enum name="textCapCharacters" value="12"/>
+            <enum name="textCapWords" value="13"/>
+            <enum name="textEmailAddress" value="14"/>
+            <enum name="textEmailSubject" value="15"/>
+            <enum name="textNoSuggestions" value="16"/>
+            <enum name="textPassword" value="17"/>
+            <enum name="textPersonName" value="18"/>
+            <enum name="textVisiblePassword" value="19"/>
+            <enum name="textMultiLine" value="20"/>
+            <enum name="textShortMessage" value="21"/>
+            <enum name="textWebEditText" value="22"/>
+            <enum name="textWebEmailAddress" value="23"/>
+            <enum name="textWebPassword" value="24"/>
+            <enum name="none" value="26"/>
+        </attr>
+        
+        <attr format="dimension" name="fieldPaddingStart"/>
+        <attr format="dimension" name="fieldPaddingTop"/>
+        <attr format="dimension" name="fieldPaddingEnd"/>
+        <attr format="dimension" name="fieldPaddingBottom"/>
+        <attr format="dimension" name="fieldPaddingHorizontal"/>
+        <attr format="dimension" name="fieldPaddingVertical"/>
+    </declare-styleable>
+    <declare-styleable name="VerticalViewPager">
+        <attr format="dimension" name="pageMargin"/>
+        <attr format="boolean" name="pinFirst"/>
+    </declare-styleable>
+</resources>

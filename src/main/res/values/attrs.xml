@@ -14,11 +14,55 @@
     </declare-styleable>
 
     <declare-styleable name="TextField">
+        <attr name="initialText" format="string" />
         <attr name="limit" format="integer" />
         <attr name="hint" format="string" />
-        <attr name="styleText" format="reference" />
-        <attr name="styleLayout" format="reference" />
+        <attr name="helperText" format="string" />
+        <attr name="singleLine" format="boolean" />
+        <attr name="textFieldStyle" format="enum">
+            <enum name="outline" value="0" />
+            <enum name="filled" value="1" />
+            <enum name="outlineDense" value="2" />
+            <enum name="filledDense" value="3" />
+        </attr>
+
+        <attr name="inputType" format="enum">
+            <enum name="text" value="0" />
+            <enum name="number" value="1" />
+            <enum name="password" value="2" />
+            <enum name="phone" value="3" />
+            <enum name="time" value="4" />
+            <enum name="date" value="5" />
+            <enum name="datetime" value="6" />
+            <enum name="postalAddress" value="7" />
+            <enum name="numberDecimal" value="8" />
+            <enum name="numberPassword" value="9" />
+            <enum name="numberSigned" value="10" />
+            <enum name="textAutoComplete" value="11" />
+            <enum name="textCapCharacters" value="12" />
+            <enum name="textCapWords" value="13" />
+            <enum name="textEmailAddress" value="14" />
+            <enum name="textEmailSubject" value="15" />
+            <enum name="textNoSuggestions" value="16" />
+            <enum name="textPassword" value="17" />
+            <enum name="textPersonName" value="18" />
+            <enum name="textVisiblePassword" value="19" />
+            <enum name="textMultiLine" value="20" />
+            <enum name="textShortMessage" value="21" />
+            <enum name="textWebEditText" value="22" />
+            <enum name="textWebEmailAddress" value="23" />
+            <enum name="textWebPassword" value="24" />
+            <enum name="none" value="26" />
+        </attr>
+        
+        <attr name="fieldPaddingStart" format="dimension" />
+        <attr name="fieldPaddingTop" format="dimension" />
+        <attr name="fieldPaddingEnd" format="dimension" />
+        <attr name="fieldPaddingBottom" format="dimension" />
+        <attr name="fieldPaddingHorizontal" format="dimension" />
+        <attr name="fieldPaddingVertical" format="dimension" />
     </declare-styleable>
+
     <declare-styleable name="VerticalViewPager">
         <attr name="pageMargin" format="dimension" />
         <attr name="pinFirst" format="boolean" />

@@ -64,7 +64,7 @@ public final class FMHelper {
         optionTexts = new String[numOptions];
         listeners = new OnClickListener[numOptions];
         mainBtnRes = resources.getDrawable(R.drawable.ic_add);
-        Arrays.fill(optionBtnColors, mainBtnBaseColor = resources.getColor(R.color.colorAccent));
+        Arrays.fill(optionBtnColors, mainBtnBaseColor = resources.getColor(R.color.colorPrimary));
         Arrays.fill(optionBtnRes, resources.getDrawable(R.drawable.ic_add));
         for (int i = 0; i < numOptions; i++) optionTexts[i] = "Option #" + (i + 1);
         this.optionTextBackground = getColoredDrawable(resources.getDimen(R.dimen.pad4dp), 0x90ffffff);

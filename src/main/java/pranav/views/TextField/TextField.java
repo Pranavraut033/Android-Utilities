@@ -3,38 +3,26 @@ package pranav.views.TextField;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.os.Build;
 import android.os.Bundle;
-import android.text.Editable;
 import android.text.InputFilter;
-import android.text.TextWatcher;
+import android.text.InputType;
+import android.text.TextUtils;
 import android.util.AttributeSet;
-import android.util.Log;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
+import android.view.LayoutInflater;
 import android.widget.FrameLayout;
-import android.widget.TextView;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.preons.pranav.utilities.R;
 
-import androidx.annotation.NonNull;
+import java.util.HashMap;
+
 import androidx.annotation.Nullable;
-import androidx.appcompat.view.ContextThemeWrapper;
-
-import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
-import static android.view.ViewGroup.LayoutParams.WRAP_CONTENT;
-import static pranav.utilities.DataBaseHelper.SQLiteQuery.TAG;
-
-
-/**
- * Created on 02-08-2017 at 23:32 by Pranav Raut.
- * For QRCodeProtection
- */
+import pranav.utilities.Utilities;
 
 @SuppressWarnings("unused")
-public final class TextField<E extends EditText> extends FrameLayout {
+public final class TextField extends FrameLayout {
     private static final String SAVED_STATE = "state";
     private static final String LIMIT = "limit";
     private static final String TEXT = "text";
@@ -42,78 +30,153 @@ public final class TextField<E extends EditText> extends FrameLayout {
     private static final String COLOR = "c";
 
     private final Context c;
-    private TextInputLayout lt;
-    private TextView ltv;
-    private boolean ul;
+    private final int[] avail_layout = {R.layout.outline,
+            R.layout.filled,
+            R.layout.outline_dense,
+            R.layout.filled_dense};
+    private final int[] avail_inputType = {
+            InputType.TYPE_CLASS_TEXT,
+            InputType.TYPE_CLASS_NUMBER,
+            InputType.TYPE_NUMBER_VARIATION_PASSWORD,
+            InputType.TYPE_CLASS_PHONE,
+            InputType.TYPE_DATETIME_VARIATION_TIME,
+            InputType.TYPE_DATETIME_VARIATION_DATE,
+            InputType.TYPE_CLASS_DATETIME,
+            InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS,
+            InputType.TYPE_NUMBER_FLAG_DECIMAL,
+            InputType.TYPE_NUMBER_VARIATION_PASSWORD,
+            InputType.TYPE_NUMBER_FLAG_SIGNED,
+            InputType.TYPE_TEXT_FLAG_AUTO_COMPLETE,
+            InputType.TYPE_TEXT_FLAG_CAP_CHARACTERS,
+            InputType.TYPE_TEXT_FLAG_CAP_WORDS,
+            InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS,
+            InputType.TYPE_TEXT_VARIATION_EMAIL_SUBJECT,
+            InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS,
+            InputType.TYPE_TEXT_VARIATION_PASSWORD,
+            InputType.TYPE_TEXT_VARIATION_PERSON_NAME,
+            InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
+            InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+            InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT,
+            InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS,
+            InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD,
+            -1,
+    };
+
     private int cr;
 
-    private boolean full;
+    private TextInputLayout lt;
+    private TextInputEditText textField;
+
+    private boolean isRestricted;
+    private boolean isFilled;
     private int count;
     private int limit;
-    @NonNull
-    private E textField;
-    private int styleL = -1;
-    private int styleT = -1;
-    private String initHint;
-    private int i;
 
-    public TextField(Context c, E textField) {
-        this(c, null, textField);
-    }
-
-    public TextField(Context c, AttributeSet a) {
-        this(c, a, null);
+    public TextField(Context c) {
+        this(c, null);
     }
 
     @SuppressWarnings("unchecked")
-    public TextField(Context c, @Nullable AttributeSet a, @Nullable E textField) {
+    public TextField(Context c, @Nullable AttributeSet a) {
         super(c, a);
         this.c = c;
-        a(a);
-        textField = textField == null ?
-                (styleT != -1 ? (E) new TextInputEditText(c, a, styleT) :
-                        (E) new TextInputEditText(c, a))
-                : textField;
-        init(textField, a);
+        init(a);
+    }
+
+    private void init(AttributeSet a) {
+        Utilities.Resources res = new Utilities.Resources(c);
+        HashMap<String, Object> attrs = a(a);
+
+        lt = (TextInputLayout) LayoutInflater.from(c)
+                .inflate(avail_layout[(int) attrs.get("styleType")],
+                        this, false);
+        textField = lt.findViewById(R.id.textField);
+        addView(lt);
+
+        textField.setHintTextColor(res.getColor(R.color.colorSecondary));
+        lt.setBoxStrokeColor(res.getColor(R.color.colorSecondary));
+        textField.setFocusable(true);
+        textField.setFocusableInTouchMode(true);
+
+        textField.setInputType(avail_inputType[(int) attrs.get("inputType")]);
+
+        if ((boolean) attrs.get("singleLine")) {
+            textField.setMaxLines(1);
+            textField.setSingleLine();
+        }
+
+        int vertical = (int) attrs.get("fieldPaddingVertical"),
+                horizontal = (int) attrs.get("fieldPaddingHorizontal"),
+                start = (int) attrs.get("fieldPaddingStart"),
+                end = (int) attrs.get("fieldPaddingEnd"),
+                top = (int) attrs.get("fieldPaddingTop"),
+                bottom = (int) attrs.get("fieldPaddingBottom");
+
+        if (horizontal != 0) start = end = horizontal;
+        if (vertical != 0) bottom = top = vertical;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
+            lt.setPaddingRelative(start, top, end, bottom);
+        else lt.setPadding(start, top, end, bottom);
+
+        setText((String) attrs.get("initialText"));
+        setHelperText((CharSequence) attrs.get("helperText"));
+        setHint((String) attrs.get("hint"));
+        setLimit((int) attrs.get("limit"));
+    }
+
+
+    private HashMap<String, Object> a(AttributeSet a) {
+        HashMap<String, Object> temp = new HashMap<>();
+
+        TypedArray typedArray = c.obtainStyledAttributes(a, R.styleable.TextField);
+
+        temp.put("limit", typedArray.getInteger(R.styleable.TextField_limit, -1));
+        temp.put("styleType", typedArray.getInteger(R.styleable.TextField_textFieldStyle, 0));
+        temp.put("inputType", typedArray.getInteger(R.styleable.TextField_inputType, 0));
+        temp.put("singleLine", typedArray.getBoolean(R.styleable.TextField_singleLine, false));
+
+        temp.put("hint", typedArray.getString(R.styleable.TextField_hint));
+        temp.put("initialText", typedArray.getString(R.styleable.TextField_initialText));
+        temp.put("fieldPaddingStart", typedArray.getDimension(R.styleable.TextField_helperText, 0));
+        temp.put("fieldPaddingEnd", typedArray.getDimension(R.styleable.TextField_helperText, 0));
+        temp.put("fieldPaddingTop", typedArray.getDimension(R.styleable.TextField_helperText, 0));
+        temp.put("fieldPaddingBottom", typedArray.getDimension(R.styleable.TextField_helperText,
+                0));
+        temp.put("fieldPaddingHorizontal", typedArray.getDimension(R.styleable.TextField_helperText,
+                0));
+        temp.put("fieldPaddingVertical", typedArray.getDimension(R.styleable.TextField_helperText,
+                0));
+
+        typedArray.recycle();
+
+        return temp;
+    }
+
+    @Override
+    public Bundle onSaveInstanceState() {
+        Bundle bundle = new Bundle();
+        bundle.putParcelable(SAVED_STATE, super.onSaveInstanceState());
+        bundle.putString(TEXT, getText());
+        bundle.putInt(LIMIT, limit);
+        bundle.putInt(COUNT, count);
+        bundle.putInt(COLOR, cr);
+        return bundle;
+    }
+
+    public void onRestoreInstanceState(@Nullable Bundle state) {
+        if (state != null) {
+            super.onRestoreInstanceState(state.getParcelable(SAVED_STATE));
+            textField.setText(state.getString(TEXT));
+            setLimit(state.getInt(LIMIT));
+        }
     }
 
     @Override
     public void setVisibility(int visibility) {
         super.setVisibility(visibility);
-        if (lt != null) lt.setVisibility(VISIBLE);
+        lt.setVisibility(VISIBLE);
         textField.setVisibility(visibility);
-    }
-
-    public void init(E textField, AttributeSet attrs) {
-        this.textField = textField;
-        lt = styleL != -1 ? new TextInputLayout(this.c, attrs, styleL) :
-                new TextInputLayout(this.c, attrs);
-        addView(lt);
-        lt.addView(textField);
-        textField.setFocusable(true);
-        textField.setFocusableInTouchMode(true);
-        textField.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                setLimitText(s.length());
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                setLimitText(s.length());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                setLimitText(s.length());
-            }
-        });
-        textField.setOnFocusChangeListener((v, hasFocus) -> {
-            if (ul) ltv.setTextColor(hasFocus ? 0x8a000000 : 0x61000000);
-        });
-        setUl(i > 0);
-        setHint(initHint);
-        setLimit(i);
     }
 
     @Override
@@ -123,111 +186,51 @@ public final class TextField<E extends EditText> extends FrameLayout {
         return super.requestFocus(direction, previouslyFocusedRect);
     }
 
-    private void a(AttributeSet a) {
-        ltv = new TextView(new ContextThemeWrapper(c, R.style.text), null, R.style.text);
-        addView(ltv);
-        TypedArray typedArray = c.obtainStyledAttributes(a, R.styleable.TextField);
-        initHint = typedArray.getString(R.styleable.TextField_hint);
-        styleT = typedArray.getResourceId(R.styleable.TextField_styleText, -1);
-        styleL = typedArray.getResourceId(R.styleable.TextField_styleLayout, -1);
-        i = typedArray.getInteger(R.styleable.TextField_limit, -1);
-        typedArray.recycle();
-        if (ul) setLimitText(0);
-    }
-
-    public void setHint(@Nullable CharSequence hint) {
-        if (lt != null) lt.setHint(hint);
-        else textField.setHint(hint);
-    }
-
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-        textField.setEnabled(enabled);
-    }
-
-    public void setError(String error) {
-        textField.setError(error);
+        lt.setEnabled(enabled);
     }
 
     public void setLimit(int limit) {
-        setUl((this.limit = limit) > 0);
-        if (ul) {
+        setRestricted((this.limit = limit) > 0);
+        if (isRestricted) {
             InputFilter[] filterArray = new InputFilter[1];
             filterArray[0] = new InputFilter.LengthFilter(limit);
             textField.setFilters(filterArray);
-            setLimitText(0);
         }
     }
 
-    private void setUl(boolean ul) {
-        this.ul = ul;
-        ltv.setVisibility(ul ? VISIBLE : GONE);
+    public void setHint(@Nullable CharSequence hint) {
+        lt.setHint(hint);
     }
 
-    public void setLimitText(int ct) {
-        if (full = ct > limit) return;
-        ltv.setText((this.count = ct) + " / " + limit);
+    public void setError(String error) {
+        lt.setError(error);
     }
 
-    static void setDVal(ViewGroup.LayoutParams layoutParams) {
-        layoutParams.height = WRAP_CONTENT;
-        layoutParams.width = MATCH_PARENT;
+    public void setHelperText(CharSequence helpText) {
+        if (!TextUtils.isEmpty(helpText)) lt.setHelperText(helpText);
     }
 
-    @SuppressWarnings({"unchecked", "ConstantConditions"})
-    @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
-        if (child instanceof EditText) {
-            removeView(lt);
-            init((E) child, null);
-        } else {
-            setDVal(params);
-            super.addView(child, index, params);
-        }
-    }
-
-    @Override
-    @NonNull
-    public Bundle onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(SAVED_STATE, super.onSaveInstanceState());
-        bundle.putString(TEXT, getContentText());
-        bundle.putInt(LIMIT, limit);
-        bundle.putInt(COUNT, count);
-        bundle.putInt(COLOR, cr);
-        return bundle;
-    }
-
-    @NonNull
-    public String getContentText() {
-        return textField.getText().toString();
-    }
-
-    public void onRestoreInstanceState(@Nullable Bundle state) {
-        if (state != null) {
-            super.onRestoreInstanceState(state.getParcelable(SAVED_STATE));
-            textField.setText(state.getString(TEXT));
-            ltv.setTextColor(state.getInt(COLOR));
-            setLimit(state.getInt(LIMIT));
-            setLimitText(state.getInt(COUNT));
-        }
-    }
-
-    public String getText() {
-        return textField.getText().toString();
-    }
-
-    public void setText(String s) {
-        textField.setText(s);
+    public void setRestricted(boolean restricted) {
+        this.isRestricted = restricted;
+        lt.setCounterEnabled(isRestricted);
     }
 
     public void setInputType(int type) {
         textField.setInputType(type);
     }
 
-    @NonNull
-    public E getTextField() {
+    public void setText(String s) {
+        textField.setText(s);
+    }
+
+    public String getText() {
+        return String.valueOf(textField.getText());
+    }
+
+    public TextInputEditText getTextField() {
         return textField;
     }
 
@@ -235,12 +238,11 @@ public final class TextField<E extends EditText> extends FrameLayout {
         return count;
     }
 
-    public boolean isFull() {
-        return full;
+    public boolean isFilled() {
+        return isFilled;
     }
 
     public String getHint() {
-        return (String) (lt != null ? lt.getHint() : textField.getHint());
+        return String.valueOf(textField.getHint());
     }
-
 }
