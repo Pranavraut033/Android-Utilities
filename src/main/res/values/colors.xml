@@ -1,17 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#3F51B5</color>
-    <color name="colorPrimaryVariant">#303F9F</color>
     <color name="colorSecondary">#FF4081</color>
 
     <color name="grey">#bdbdbd</color>
     <color name="transparent">#0000</color>
     <color name="fab_grey">#90bdbdbd</color>
-
-    <color name="g_yellow">#fbbc05</color>
-    <color name="g_green">#34a853</color>
-    <color name="g_red">#ea4334</color>
-    <color name="g_blue">#4285f4</color>
 
     <color name="white">#fff</color>
 

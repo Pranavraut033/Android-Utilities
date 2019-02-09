@@ -30,10 +30,12 @@ public final class TextField extends FrameLayout {
     private static final String COLOR = "c";
 
     private final Context c;
-    private final int[] avail_layout = {R.layout.outline,
+    private final int[] avail_layout = {
+            R.layout.outline,
             R.layout.filled,
             R.layout.outline_dense,
-            R.layout.filled_dense};
+            R.layout.filled_dense
+    };
     private final int[] avail_inputType = {
             InputType.TYPE_CLASS_TEXT,
             InputType.TYPE_CLASS_NUMBER,
@@ -91,7 +93,6 @@ public final class TextField extends FrameLayout {
                 .inflate(avail_layout[(int) attrs.get("styleType")],
                         this, false);
         textField = lt.findViewById(R.id.textField);
-        addView(lt);
 
         textField.setHintTextColor(res.getColor(R.color.colorSecondary));
         lt.setBoxStrokeColor(res.getColor(R.color.colorSecondary));
@@ -105,12 +106,12 @@ public final class TextField extends FrameLayout {
             textField.setSingleLine();
         }
 
-        int vertical = (int) attrs.get("fieldPaddingVertical"),
-                horizontal = (int) attrs.get("fieldPaddingHorizontal"),
-                start = (int) attrs.get("fieldPaddingStart"),
-                end = (int) attrs.get("fieldPaddingEnd"),
-                top = (int) attrs.get("fieldPaddingTop"),
-                bottom = (int) attrs.get("fieldPaddingBottom");
+        int vertical = Math.round((float) attrs.get("fieldPaddingVertical")),
+                horizontal = Math.round((float) attrs.get("fieldPaddingHorizontal")),
+                start = Math.round((float) attrs.get("fieldPaddingStart")),
+                end = Math.round((float) attrs.get("fieldPaddingEnd")),
+                top = Math.round((float) attrs.get("fieldPaddingTop")),
+                bottom = Math.round((float) attrs.get("fieldPaddingBottom"));
 
         if (horizontal != 0) start = end = horizontal;
         if (vertical != 0) bottom = top = vertical;
@@ -118,6 +119,8 @@ public final class TextField extends FrameLayout {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1)
             lt.setPaddingRelative(start, top, end, bottom);
         else lt.setPadding(start, top, end, bottom);
+
+        addView(lt);
 
         setText((String) attrs.get("initialText"));
         setHelperText((CharSequence) attrs.get("helperText"));
@@ -138,15 +141,20 @@ public final class TextField extends FrameLayout {
 
         temp.put("hint", typedArray.getString(R.styleable.TextField_hint));
         temp.put("initialText", typedArray.getString(R.styleable.TextField_initialText));
-        temp.put("fieldPaddingStart", typedArray.getDimension(R.styleable.TextField_helperText, 0));
-        temp.put("fieldPaddingEnd", typedArray.getDimension(R.styleable.TextField_helperText, 0));
-        temp.put("fieldPaddingTop", typedArray.getDimension(R.styleable.TextField_helperText, 0));
-        temp.put("fieldPaddingBottom", typedArray.getDimension(R.styleable.TextField_helperText,
+
+        temp.put("fieldPaddingStart",
+                typedArray.getDimension(R.styleable.TextField_fieldPaddingStart, 0));
+        temp.put("fieldPaddingEnd",
+                typedArray.getDimension(R.styleable.TextField_fieldPaddingEnd, 0));
+        temp.put("fieldPaddingTop",
+                typedArray.getDimension(R.styleable.TextField_fieldPaddingTop, 0));
+        temp.put("fieldPaddingBottom",
+                typedArray.getDimension(R.styleable.TextField_fieldPaddingBottom,
                 0));
-        temp.put("fieldPaddingHorizontal", typedArray.getDimension(R.styleable.TextField_helperText,
-                0));
-        temp.put("fieldPaddingVertical", typedArray.getDimension(R.styleable.TextField_helperText,
-                0));
+        temp.put("fieldPaddingHorizontal",
+                typedArray.getDimension(R.styleable.TextField_fieldPaddingHorizontal, 0));
+        temp.put("fieldPaddingVertical",
+                typedArray.getDimension(R.styleable.TextField_fieldPaddingVertical,0));
 
         typedArray.recycle();
 

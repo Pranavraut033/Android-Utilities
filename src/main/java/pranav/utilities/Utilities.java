@@ -42,6 +42,7 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.graphics.ColorUtils;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -278,12 +279,19 @@ public class Utilities {
     }
 
     public static class Colors {
-
         public static int blend(int color1, int color2) {
             return ((Color.alpha(color1) + Color.alpha(color2)) / 2) << 24 |
                     ((Color.red(color1) + Color.red(color2)) / 2 << 16) |
                     ((Color.green(color1) + Color.green(color2)) / 2) << 8 |
                     (Color.blue(color1) + Color.blue(color2)) / 2;
+        }
+
+        public static int blendA(int color1, int color2) {
+            return blendA(color1, color2, 1);
+        }
+
+        public static int blendA(int color1, int color2, float ratio) {
+            return ColorUtils.blendARGB(color1, color2, ratio);
         }
 
         public static int changeAlpha(int color, float i) {

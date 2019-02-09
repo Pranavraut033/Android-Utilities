@@ -26,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.viewpager.widget.ViewPager;
 import pranav.views.L1;
 import pranav.views.Listeners;
@@ -259,10 +260,21 @@ public class Animations {
 
         public AnimateStatusBar(Window window) {
             this.window = window;
+            setChain(this);
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         public synchronized void animate(int colorFrom, int colorTo) {
+            animate(colorFrom, colorTo, false);
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+        public synchronized void animate(int colorFrom, int colorTo, boolean reverse) {
+            if (reverse) {
+                colorFrom = colorTo + colorFrom;
+                colorTo = colorFrom - colorTo;
+                colorFrom = colorFrom - colorTo;
+            }
             AnimatingColor animatingColor = new AnimatingColor(colorFrom, colorTo);
             animatingColor.setColorChangeListener(color -> {
                 if (window != null) window.setStatusBarColor(color);
@@ -303,8 +315,9 @@ public class Animations {
             return duration;
         }
 
-        public void setDuration(long duration) {
+        public AnimateStatusBar setDuration(long duration) {
             this.duration = duration;
+            return this;
         }
 
         @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -334,19 +347,21 @@ public class Animations {
         }
 
         public AnimatingColor(AnimatingColor animatingColor) {
+            setChain(this);
             setColors(animatingColor.colorTo, animatingColor.colorFrom)
                     .setDelay(animatingColor.delay).setDuration(animatingColor.duration)
                     .setColorChangeListener(animatingColor.colorChangeListener);
             objects = animatingColor.objects;
-            setChain(this);
         }
 
         public AnimatingColor(int colorFrom, int colorTo) {
+            setChain(this);
             this.colorFrom = value = colorFrom;
             this.colorTo = colorTo;
         }
 
         public AnimatingColor(int colorTo, View... objects) {
+            setChain(this);
             this.colorTo = colorTo;
             setObjects(objects);
         }
@@ -372,6 +387,16 @@ public class Animations {
         }
 
         public void start() {
+            start(false);
+        }
+
+        public void start(boolean reverse) {
+            int colorFrom = this.colorFrom, colorTo = this.colorTo;
+            if (reverse) {
+                colorFrom = colorTo + colorFrom;
+                colorTo = colorFrom - colorTo;
+                colorFrom = colorFrom - colorTo;
+            }
             ValueAnimator colorAnimation = ValueAnimator.ofObject(new ArgbEvaluator(), colorFrom, colorTo);
             colorAnimation.addUpdateListener(animator -> {
                 value = (int) animator.getAnimatedValue();
@@ -382,6 +407,8 @@ public class Animations {
                                 ((ImageView) o).setColorFilter(value, PorterDuff.Mode.SRC_ATOP);
                             else if (o instanceof TextView)
                                 ((TextView) o).setTextColor(value);
+                            else if (o instanceof CardView)
+                                ((CardView) o).setCardBackgroundColor(value);
                             else if (o instanceof Toolbar)
                                 ((Toolbar) o).setTitleTextColor(value);
                             else
@@ -441,7 +468,7 @@ public class Animations {
 
         @Nullable
         public View[] getObjects() {
-            return objects.toArray(new View[objects.size()]);
+            return objects.toArray(new View[0]);
         }
 
         public AnimatingColor removeObjects(View... objects) {

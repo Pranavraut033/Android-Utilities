@@ -654,7 +654,6 @@ color cardview_light_background
 color cardview_shadow_end_color
 color cardview_shadow_start_color
 color colorPrimary
-color colorPrimaryVariant
 color colorSecondary
 color design_bottom_navigation_shadow_color
 color design_box_stroke_color
@@ -703,10 +702,6 @@ color error_color_material_light
 color fab_grey
 color foreground_material_dark
 color foreground_material_light
-color g_blue
-color g_green
-color g_red
-color g_yellow
 color grey
 color highlighted_text_material_dark
 color highlighted_text_material_light
@@ -1027,7 +1022,6 @@ dimen notification_small_icon_size_as_large
 dimen notification_subtext_size
 dimen notification_top_pad
 dimen notification_top_pad_large_text
-dimen pad
 dimen pad1
 dimen pad12dp
 dimen pad16dp
@@ -1035,13 +1029,11 @@ dimen pad28dp
 dimen pad2dp
 dimen pad32dp
 dimen pad4dp
-dimen pad6dp
 dimen square_radius
 dimen subtitle_corner_radius
 dimen subtitle_outline_width
 dimen subtitle_shadow_offset
 dimen subtitle_shadow_radius
-dimen textSize
 dimen tooltip_corner_radius
 dimen tooltip_horizontal_padding
 dimen tooltip_margin
@@ -1146,7 +1138,6 @@ drawable btn_radio_off_mtrl
 drawable btn_radio_off_to_on_mtrl_animation
 drawable btn_radio_on_mtrl
 drawable btn_radio_on_to_off_mtrl_animation
-drawable circular
 drawable design_bottom_navigation_item_background
 drawable design_fab_background
 drawable design_ic_visibility
@@ -1175,7 +1166,6 @@ drawable notification_template_icon_bg
 drawable notification_template_icon_low_bg
 drawable notification_tile_bg
 drawable notify_panel_notification_icon_bg
-drawable square
 drawable tooltip_frame_dark
 drawable tooltip_frame_light
 id accessibility_action_clickable_span
@@ -1336,7 +1326,6 @@ id radio
 id right
 id right_icon
 id right_side
-id root
 id rounded
 id save_image_matrix
 id save_non_transition_alpha
@@ -1481,7 +1470,6 @@ layout abc_search_dropdown_item_icons_2line
 layout abc_search_view
 layout abc_select_dialog_material
 layout abc_tooltip
-layout button_layout
 layout custom_dialog
 layout design_bottom_navigation_item
 layout design_bottom_sheet_dialog
@@ -2153,10 +2141,6 @@ style Widget_MaterialComponents_Toolbar_Primary
 style Widget_MaterialComponents_Toolbar_Surface
 style Widget_Support_CoordinatorLayout
 style bottomEnd
-style button
-style circular
-style square
-style text
 styleable ActionBar background backgroundSplit backgroundStacked contentInsetEnd contentInsetEndWithActions contentInsetLeft contentInsetRight contentInsetStart contentInsetStartWithNavigation customNavigationLayout displayOptions divider elevation height hideOnContentScroll homeAsUpIndicator homeLayout icon indeterminateProgressStyle itemPadding logo navigationMode popupTheme progressBarPadding progressBarStyle subtitle subtitleTextStyle title titleTextStyle
 styleable ActionBarLayout android_layout_gravity
 styleable ActionMenuItemView android_minWidth

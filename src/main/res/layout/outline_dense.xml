@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.textfield.TextInputLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/textFieldLayout"
     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
     android:layout_width="match_parent"
+    app:boxStrokeColor="?attr/colorSecondary"
+    app:hintTextColor="?attr/colorSecondary"
     android:layout_height="wrap_content">
 
     <com.google.android.material.textfield.TextInputEditText
