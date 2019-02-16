@@ -251,6 +251,7 @@ public class Animations {
     }
 
     @SuppressWarnings("unused")
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     public static class AnimateStatusBar extends Listeners.l1<AnimateStatusBar> {
 
         private final Window window;
@@ -263,12 +264,10 @@ public class Animations {
             setChain(this);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         public synchronized void animate(int colorFrom, int colorTo) {
             animate(colorFrom, colorTo, false);
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         public synchronized void animate(int colorFrom, int colorTo, boolean reverse) {
             if (reverse) {
                 colorFrom = colorTo + colorFrom;
@@ -307,8 +306,7 @@ public class Animations {
         }
 
         public void setColor(@ColorInt int color) {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
-                window.setStatusBarColor(color);
+            window.setStatusBarColor(color);
         }
 
         public long getDuration() {
@@ -320,7 +318,6 @@ public class Animations {
             return this;
         }
 
-        @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
         public int getCurrentStatusColor() {
             return window.getStatusBarColor();
         }
