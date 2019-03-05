@@ -19,6 +19,7 @@
         <attr name="hint" format="string" />
         <attr name="helperText" format="string" />
         <attr name="singleLine" format="boolean" />
+        <attr name="minLines" format="integer" />
         <attr name="textFieldStyle" format="enum">
             <enum name="outline" value="0" />
             <enum name="filled" value="1" />
@@ -54,7 +55,7 @@
             <enum name="textWebPassword" value="24" />
             <enum name="none" value="26" />
         </attr>
-        
+
         <attr name="fieldPaddingStart" format="dimension" />
         <attr name="fieldPaddingTop" format="dimension" />
         <attr name="fieldPaddingEnd" format="dimension" />

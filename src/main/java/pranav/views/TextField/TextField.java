@@ -78,7 +78,6 @@ public final class TextField extends FrameLayout {
         this(c, null);
     }
 
-    @SuppressWarnings("unchecked")
     public TextField(Context c, @Nullable AttributeSet a) {
         super(c, a);
         this.c = c;
@@ -94,12 +93,12 @@ public final class TextField extends FrameLayout {
                         this, false);
         textField = lt.findViewById(R.id.textField);
 
-        textField.setHintTextColor(res.getColor(R.color.colorSecondary));
-        lt.setBoxStrokeColor(res.getColor(R.color.colorSecondary));
         textField.setFocusable(true);
         textField.setFocusableInTouchMode(true);
 
         textField.setInputType(avail_inputType[(int) attrs.get("inputType")]);
+        textField.setMinLines((int) attrs.get("minLines"));
+        textField.setLines((int) attrs.get("minLines"));
 
         if ((boolean) attrs.get("singleLine")) {
             textField.setMaxLines(1);
@@ -128,7 +127,6 @@ public final class TextField extends FrameLayout {
         setLimit((int) attrs.get("limit"));
     }
 
-
     private HashMap<String, Object> a(AttributeSet a) {
         HashMap<String, Object> temp = new HashMap<>();
 
@@ -141,6 +139,7 @@ public final class TextField extends FrameLayout {
 
         temp.put("hint", typedArray.getString(R.styleable.TextField_hint));
         temp.put("initialText", typedArray.getString(R.styleable.TextField_initialText));
+        temp.put("minLines", typedArray.getInteger(R.styleable.TextField_minLines, 1));
 
         temp.put("fieldPaddingStart",
                 typedArray.getDimension(R.styleable.TextField_fieldPaddingStart, 0));
