@@ -1,12 +1,13 @@
 package pranav.utilities;
 
-import androidx.annotation.MenuRes;
-import androidx.annotation.NonNull;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.PopupMenu;
+
+import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
 
 /**
  * Created on 03-02-2018 at 15:26 by Pranav Raut.
@@ -88,7 +89,7 @@ public abstract class PopMenu implements View.OnTouchListener, View.OnLongClickL
     }
 
     public void showIcon() {
-        Utilities.setForceShowIcon(mPopupMenu);
+        Utilities.INSTANCE.setForceShowIcon(mPopupMenu);
     }
 
     @Override

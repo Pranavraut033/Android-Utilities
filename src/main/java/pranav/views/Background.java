@@ -3,18 +3,17 @@ package pranav.views;
 import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.content.Context;
-import androidx.annotation.FloatRange;
-import androidx.annotation.IdRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.widget.FrameLayout;
 
+import androidx.annotation.FloatRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import pranav.utilities.ArgbEval;
 
 import static pranav.utilities.Animations.ANIMATION_DURATION;
-import static pranav.utilities.Utilities.MATCH;
 import static pranav.utilities.Utilities.isFinite;
 
 /**
@@ -33,7 +32,7 @@ public class Background extends FrameLayout  {
 
     private FrameLayout clickCaptureView;
     @Nullable
-    private Keys keys;
+    private BackKeyListener keys;
     private TimeInterpolator interpolator;
     private Listeners.l1<Background> l;
     private int state;
@@ -49,11 +48,11 @@ public class Background extends FrameLayout  {
     }
 
     private void init() {
-        setLayoutParams(MATCH);
+        setLayoutParams(INSTANCE.getMATCH());
         setFocusableInTouchMode(true);
         setFocusable(true);
         clickCaptureView = new FrameLayout(getContext());
-        clickCaptureView.setLayoutParams(MATCH);
+        clickCaptureView.setLayoutParams(INSTANCE.getMATCH());
         super.addView(clickCaptureView);
         argbEval.setObject(this);
         clickCaptureView.setId(BACK_ID);
@@ -78,7 +77,7 @@ public class Background extends FrameLayout  {
         return super.onKeyDown(keyCode, event);
     }
 
-    public Background setKeys(@Nullable Keys onBackPress) {
+    public Background setKeys(@Nullable BackKeyListener onBackPress) {
         this.keys = onBackPress;
         return this;
     }
@@ -120,7 +119,7 @@ public class Background extends FrameLayout  {
     }
 
     public void setPercent(@FloatRange(from = 0f, to = 100f) float percent) {
-        if (isFinite(percent)) {
+        if (INSTANCE.isFinite(percent)) {
             if (percent == 100) setState(VISIBLE);
             else if (percent == 0) setState(GONE);
             argbEval.getValue(percent / 100f);

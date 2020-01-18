@@ -23,6 +23,8 @@
     <string name="go_back">go back</string>
     <string name="menu_icon">MenuIcon</string>
     <string name="more_option">more option</string>
+    <string name="photopicker_menu_camera_title">Camera</string>
+    <string name="photopicker_menu_gallery_title">Gallery</string>
     <style name="bottomEnd">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -34,7 +36,7 @@
         <attr format="integer" name="numOption"/>
         <attr format="boolean" name="useCard"/>
         <attr format="color" name="statusBarColor"/>
-        <attr format="integer" name="backgroundColor"/>
+        <attr format="integer" name="menuBackground"/>
         <attr format="color" name="baseOptionColor"/>
         <attr format="reference" name="baseBtnIcons"/>
         <attr format="color" name="optionBtnColor"/>
@@ -48,7 +50,9 @@
         <attr format="string" name="hint"/>
         <attr format="string" name="helperText"/>
         <attr format="boolean" name="singleLine"/>
+        <attr format="boolean" name="showCounter"/>
         <attr format="integer" name="minLines"/>
+        <attr format="color" name="textFieldColor"/>
         <attr format="enum" name="textFieldStyle">
             <enum name="outline" value="0"/>
             <enum name="filled" value="1"/>
@@ -64,10 +68,10 @@
             <enum name="time" value="4"/>
             <enum name="date" value="5"/>
             <enum name="datetime" value="6"/>
-            <enum name="postalAddress" value="7"/>
-            <enum name="numberDecimal" value="8"/>
-            <enum name="numberPassword" value="9"/>
-            <enum name="numberSigned" value="10"/>
+            <enum name="numberDecimal" value="7"/>
+            <enum name="numberPassword" value="8"/>
+            <enum name="numberSigned" value="9"/>
+            <enum name="postalAddress" value="10"/>
             <enum name="textAutoComplete" value="11"/>
             <enum name="textCapCharacters" value="12"/>
             <enum name="textCapWords" value="13"/>
@@ -82,7 +86,7 @@
             <enum name="textWebEditText" value="22"/>
             <enum name="textWebEmailAddress" value="23"/>
             <enum name="textWebPassword" value="24"/>
-            <enum name="none" value="26"/>
+            <enum name="none" value="25"/>
         </attr>
 
         <attr format="dimension" name="fieldPaddingStart"/>

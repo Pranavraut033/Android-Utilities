@@ -6,10 +6,11 @@ import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Size;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +26,7 @@ import static pranav.utilities.Log.TAG;
  * @version 0
  */
 
+@SuppressWarnings("ALL")
 public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
 
     private final SQLiteQuery query;
@@ -34,7 +36,7 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
         super(context, query.getDBName(), null, 1);
         this.query = query;
         this.context = context;
-        //onUpgrade(getReadableDatabase(), 0, 0);
+//        onUpgrade(getReadableDatabase(), 0, 0);
     }
 
     @Override
@@ -130,48 +132,80 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
      * @author Pranav
      * @version 0
      */
+    @SuppressWarnings("unused")
     public static class SQLiteQuery {
         public static final String TAG = "preons";
-        private final static String[] VALUES = {"BLOB", "BOOLEAN", "DATETIME", "INT", "MEDIUMINT", "BIGINT", "FLOAT", "DOUBLE", "CHARACTER", "TEXT"};
+        private final static String[] VALUES = {
+                "BLOB",
+                "BOOLEAN",
+                "DATETIME",
+                "INT",
+                "MEDIUMINT",
+                "BIGINT",
+                "FLOAT",
+                "DOUBLE",
+                "CHARACTER",
+                "TEXT",
+                "TIMESTAMP"
+        };
         private final String name;
-        private final ArrayList<String> names;
+        private final ArrayList<String> names = new ArrayList<>();
         private final ArrayList<String> types = new ArrayList<>();
+        private final ArrayList<String> defaultValues = new ArrayList<>();
 
         public SQLiteQuery(String name) {
-            this.names = new ArrayList<>();
             this.name = name;
         }
 
         public final void addCol(@Size(min = 1) String[] names, @dataType String[] types) {
+            String[] defaults = new String[name.length()];
+            Arrays.fill(defaults, "NONE");
+
+            addCol(names, types, defaults);
+        }
+
+        public final void addCol(@Size(min = 1) String[] names, @dataType String[] types, String[] defaults) {
             if (names.length == types.length) for (int i = 0; i < names.length; i++)
-                addCol(names[i], types[i]);
+                addCol(names[i], types[i], defaults[i]);
             else throw new IllegalArgumentException("size of name and type don't match " +
                     "name: [" + names.length + "] : type [" + types.length + "]");
         }
 
         public final void addCol(@Size(min = 1) String name, @dataType String type) {
+            addCol(name, type, "NONE");
+        }
+
+        public final void addCol(@Size(min = 1) String name, @dataType String type, String defaultValue) {
             if (Arrays.binarySearch(VALUES, name.toUpperCase()) > 0)
-                throw new IllegalAccessError("Cannot use \"" + name + "\"");
+                throw new IllegalAccessError("\"" + name + "\" is reserved");
             if (names.contains(name))
                 throw new IllegalArgumentException("\"" + name + "\" exists try using different one");
+
             this.types.add(type);
             this.names.add(name);
+            this.defaultValues.add(defaultValue);
         }
 
         @NonNull
-        public final String getCreateQuery() {
+        final String getCreateQuery() {
             StringBuilder builder = new StringBuilder(200);
-            builder.append("create table ")
-                    .append(name).append("(").append("id INTEGER PRIMARY KEY autoincrement, ");
-            for (int i = 0; i < names.size(); i++)
-                builder.append(names.get(i)).append(" ").append(types.get(i)).append(", ");
+            builder.append("CREATE TABLE ")
+                    .append(name).append(" (").append("`id` INTEGER PRIMARY KEY AUTOINCREMENT, ");
+
+            for (int i = 0; i < names.size(); i++) {
+                builder.append('`').append(names.get(i)).append("` ").append(types.get(i))
+                        .append(" DEFAULT ").append(defaultValues.get(i))
+                        .append(", ");
+            }
+
             builder = new StringBuilder(builder.substring(0, builder.length() - 2));
             builder.append(")");
+
             Log.d(TAG, "getCreateQuery: " + builder.toString());
             return builder.toString();
         }
 
-        public final String getDBName() {
+        final String getDBName() {
             return name;
         }
 
@@ -180,8 +214,8 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
          * has last column existing in the table else will create new table
          */
         @NonNull
-        public final String getExistsQuery() {
-            return "drop table if exists " + names.get(names.size() - 1);
+        final String getExistsQuery() {
+            return "DROP TABLE IF EXISTS " + names.get(names.size() - 1);
         }
 
         public final ArrayList<String> getNames() {
@@ -189,28 +223,33 @@ public abstract class DataBaseHelper<E> extends SQLiteOpenHelper {
         }
 
         @NonNull
-        public final String getSelectItemQuery(String colName, Object value) {
-            return getSelectTableQuery() + " WHERE " + colName + " = " + value;
+        final String getSelectItemQuery(String colName, Object value) {
+            return getSelectTableQuery() + " WHERE `" + colName + "` = '" + value + "'";
         }
 
         @NonNull
         public final String getSelectItemQuery(String colName, String value) {
-            return getSelectTableQuery() + " WHERE " + colName + " = " + value;
+            return getSelectTableQuery() + " WHERE `" + colName + "` = '" + value + "'";
         }
 
         @NonNull
         public final String getSelectItemQuery(int colIndex, Object value) {
-            return getSelectTableQuery() + " WHERE " + names.get(colIndex) + " = " + value;
+            return getSelectTableQuery() + " WHERE `" + names.get(colIndex) + "` = '" + value + "'";
         }
 
         @NonNull
-        public final String[] getNamesToArray() {
-            return names.toArray(new String[names.size()]);
+        public final String getSelectItemQuery(int colIndex, String value) {
+            return getSelectTableQuery() + " WHERE `" + names.get(colIndex) + "` = '" + value + "'";
+        }
+
+        @NonNull
+        final String[] getNamesToArray() {
+            return names.toArray(new String[0]);
         }
 
         @NonNull
         public final String getSelectTableQuery() {
-            return "SELECT * from " + name;
+            return "SELECT * FROM `" + name + "`";
         }
     }
 }

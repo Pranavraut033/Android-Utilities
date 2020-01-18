@@ -4,7 +4,7 @@
         <attr name="numOption" format="integer" />
         <attr name="useCard" format="boolean" />
         <attr name="statusBarColor" format="color" />
-        <attr name="backgroundColor" format="integer" />
+        <attr name="menuBackground" format="integer" />
         <attr name="baseOptionColor" format="color" />
         <attr name="baseBtnIcons" format="reference" />
         <attr name="optionBtnColor" format="color" />
@@ -19,7 +19,9 @@
         <attr name="hint" format="string" />
         <attr name="helperText" format="string" />
         <attr name="singleLine" format="boolean" />
+        <attr name="showCounter" format="boolean" />
         <attr name="minLines" format="integer" />
+        <attr name="textFieldColor" format="color" />
         <attr name="textFieldStyle" format="enum">
             <enum name="outline" value="0" />
             <enum name="filled" value="1" />
@@ -35,10 +37,10 @@
             <enum name="time" value="4" />
             <enum name="date" value="5" />
             <enum name="datetime" value="6" />
-            <enum name="postalAddress" value="7" />
-            <enum name="numberDecimal" value="8" />
-            <enum name="numberPassword" value="9" />
-            <enum name="numberSigned" value="10" />
+            <enum name="numberDecimal" value="7" />
+            <enum name="numberPassword" value="8" />
+            <enum name="numberSigned" value="9" />
+            <enum name="postalAddress" value="10" />
             <enum name="textAutoComplete" value="11" />
             <enum name="textCapCharacters" value="12" />
             <enum name="textCapWords" value="13" />
@@ -53,7 +55,7 @@
             <enum name="textWebEditText" value="22" />
             <enum name="textWebEmailAddress" value="23" />
             <enum name="textWebPassword" value="24" />
-            <enum name="none" value="26" />
+            <enum name="none" value="25" />
         </attr>
 
         <attr name="fieldPaddingStart" format="dimension" />

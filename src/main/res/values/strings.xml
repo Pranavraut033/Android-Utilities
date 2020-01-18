@@ -5,4 +5,6 @@
     <string name="choose_color">Choose Color</string>
     <string name="go_back">go back</string>
     <string name="more_option">more option</string>
+    <string name="photopicker_menu_camera_title">Camera</string>
+    <string name="photopicker_menu_gallery_title">Gallery</string>
 </resources>
