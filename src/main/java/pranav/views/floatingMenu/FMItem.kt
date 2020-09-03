@@ -17,7 +17,7 @@ import com.preons.pranav.utilities.R
 import pranav.utilities.Animations.ANIMATION_DURATION
 import pranav.utilities.Animations.DI
 import pranav.utilities.Utilities
-import pranav.utilities.Utilities.Resources.getColoredDrawable
+import pranav.utilities.Utilities.ResourceManager.Companion.getColoredDrawable
 
 /**
  * Created on 31-05-17 at 06:53 PM by Pranav Raut.
@@ -27,7 +27,7 @@ import pranav.utilities.Utilities.Resources.getColoredDrawable
 @Suppress("unused")
 class FMItem : LinearLayout {
 
-    private val res = Utilities.Resources(context)
+    private val res = Utilities.ResourceManager(context)
     private var textView: TextView? = null
     private var actionButton: FloatingActionButton? = null
     var imageView: ImageView? = null

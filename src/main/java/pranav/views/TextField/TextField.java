@@ -5,7 +5,6 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Build;
-import android.os.Bundle;
 import android.text.InputFilter;
 import android.text.InputType;
 import android.text.TextUtils;
@@ -14,6 +13,7 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
@@ -65,6 +65,7 @@ public final class TextField extends FrameLayout {
             InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PERSON_NAME,
             InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD,
             InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_MULTI_LINE,
+            InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_SHORT_MESSAGE,
             InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_WEB_EDIT_TEXT,
             InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_WEB_EMAIL_ADDRESS,
             InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_WEB_PASSWORD,
@@ -80,6 +81,9 @@ public final class TextField extends FrameLayout {
     private int count;
     private int limit;
     private Boolean counterEnabled;
+    @Nullable
+    private String errorString;
+
 
     public TextField(Context c) {
         this(c, null);
@@ -92,7 +96,7 @@ public final class TextField extends FrameLayout {
     }
 
     private void init(AttributeSet a) {
-        Utilities.Resources res = new Utilities.Resources(c);
+        Utilities.ResourceManager res = new Utilities.ResourceManager(c);
         HashMap<String, Object> attrs = a(a);
         int textFieldColor = (int) attrs.get("textFieldColor");
 
@@ -107,7 +111,6 @@ public final class TextField extends FrameLayout {
         textField.setInputType(avail_inputType[(int) attrs.get("inputType")]);
         textField.setMinLines((int) attrs.get("minLines"));
         textField.setLines((int) attrs.get("minLines"));
-
 
         if (textFieldColor != 0) {
             int t = Objects.requireNonNull(lt.getHintTextColor()).getDefaultColor();
@@ -193,25 +196,25 @@ public final class TextField extends FrameLayout {
         return temp;
     }
 
-    @Override
-    public Bundle onSaveInstanceState() {
-        Bundle bundle = new Bundle();
-        bundle.putParcelable(SAVED_STATE, super.onSaveInstanceState());
-        bundle.putString(TEXT, getText());
-        bundle.putInt(LIMIT, limit);
-        bundle.putInt(COUNT, count);
-        bundle.putInt(COLOR, cr);
-        bundle.putBoolean(COUNTER_ENABLED, this.counterEnabled);
-        return bundle;
-    }
+//    @Override
+//    public Bundle onSaveInstanceState() {
+//        Bundle bundle = new Bundle();
+//        bundle.putParcelable(SAVED_STATE, super.onSaveInstanceState());
+//        bundle.putString(TEXT, getText());
+//        bundle.putInt(LIMIT, limit);
+//        bundle.putInt(COUNT, count);
+//        bundle.putInt(COLOR, cr);
+//        bundle.putBoolean(COUNTER_ENABLED, this.counterEnabled);
+//        return bundle;
+//    }
 
-    public void onRestoreInstanceState(@Nullable Bundle state) {
-        if (state != null) {
-            super.onRestoreInstanceState(state.getParcelable(SAVED_STATE));
-            textField.setText(state.getString(TEXT));
-            setLimit(state.getInt(LIMIT), state.getBoolean(COUNTER_ENABLED));
-        }
-    }
+//    public void onRestoreInstanceState(@Nullable Bundle state) {
+//        if (state != null) {
+//            super.onRestoreInstanceState(state.getParcelable(SAVED_STATE));
+//            textField.setText(state.getString(TEXT));
+//            setLimit(state.getInt(LIMIT), state.getBoolean(COUNTER_ENABLED));
+//        }
+//    }
 
     @Override
     public void setVisibility(int visibility) {
@@ -249,7 +252,17 @@ public final class TextField extends FrameLayout {
     }
 
     public void setError(String error) {
+        lt.setErrorEnabled(error != null && error.isEmpty());
         lt.setError(error);
+        this.errorString = error;
+    }
+
+    public String getErrorString() {
+        return errorString;
+    }
+
+    public void setError(@StringRes int stringRes) {
+        setError(getContext().getString(stringRes));
     }
 
     public void setHelperText(CharSequence helpText) {
@@ -274,10 +287,8 @@ public final class TextField extends FrameLayout {
 
     public boolean setErrorIfEmpty(String error) {
         final boolean b = TextUtils.isEmpty(getText());
-        if (b) {
-            setError(error);
-            requestFocus();
-        }
+        if (b) setError(error);
+        requestFocus();
         return b;
     }
 
@@ -295,5 +306,13 @@ public final class TextField extends FrameLayout {
 
     public String getHint() {
         return String.valueOf(textField.getHint());
+    }
+
+    public void setErrorIfNotSame(@StringRes int errorRes) {
+        setErrorIfNotSame(getContext().getString(errorRes));
+    }
+
+    public void setErrorIfNotSame(@Nullable String error) {
+        if (!TextUtils.equals(error, errorString)) setError(error);
     }
 }

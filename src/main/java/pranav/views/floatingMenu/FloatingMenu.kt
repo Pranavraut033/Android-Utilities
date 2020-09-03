@@ -29,6 +29,9 @@ import pranav.utilities.Animations.animateAlpha
 import pranav.utilities.Animations.animateRotate
 import pranav.utilities.Log.TAG
 import pranav.utilities.Utilities
+import pranav.utilities.Utilities.Colors.blend
+import pranav.utilities.Utilities.Colors.changeAlpha
+import pranav.utilities.Utilities.Colors.isBright
 import pranav.utilities.Utilities.getReverseArray
 import java.util.*
 
@@ -43,7 +46,7 @@ class FloatingMenu @JvmOverloads constructor(
     private val attrs: AttributeSet? = null
 ) : FrameLayout(context, attrs) {
     private val c: Float
-    private val res: Utilities.Resources = Utilities.Resources(context)
+    private val res: Utilities.ResourceManager = Utilities.ResourceManager(context)
     private var arcMotion: ArcMotion? = null
     private var drawable: Drawable? = null
     private var window: Window? = null
@@ -51,7 +54,7 @@ class FloatingMenu @JvmOverloads constructor(
     private val helpers = ArrayList<FMGroupHelper>()
     private val groups = ArrayList<FMGroup>()
     private var itemAnimation: ItemAnimation? = null
-    private var statusBar: Animations.AnimateStatusBar? = null
+    private var statusBar: Animations.AnimateSystemBar? = null
     private val cvAnimator = Animations.AnimatingColor()
     private val mSRCAnimator = Animations.AnimatingColor()
     private val mbAnimator = Animations.AnimatingColor()
@@ -177,7 +180,7 @@ class FloatingMenu @JvmOverloads constructor(
         window = details.window
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) statusBar =
-            Animations.AnimateStatusBar(window)
+            Animations.AnimateSystemBar(window)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP)
             oColor = window!!.statusBarColor
         menuItems()
@@ -191,8 +194,8 @@ class FloatingMenu @JvmOverloads constructor(
     }
 
     fun add(vararg _groupDetails: FMGroupHelper) {
-        var groupDetails = _groupDetails
-        groupDetails = getReverseArray(groupDetails)
+        var groupDetails = getReverseArray(arrayOf(*_groupDetails))
+
         isMenuGroup = true
         for (groupDetail in groupDetails) {
             groupDetail.isUseCard = isUseCard
@@ -215,12 +218,12 @@ class FloatingMenu @JvmOverloads constructor(
     private fun menuItems() {
         for (i in 0 until details!!.numOptions) {
             val item = FMItem(context, isUseCard)
-            item.setFabColor(details!!.optionBtnColors[i])
-            item.setFabSrc(details!!.optionBtnRes[i])
-            item.setOptionText(details!!.optionTexts[i])
+            details!!.optionBtnColors?.get(i)?.let { item.setFabColor(it) }
+            details!!.optionBtnRes?.get(i)?.let { item.setFabSrc(it) }
+            details!!.optionTexts?.get(i)?.let { item.setOptionText(it) }
             if (!isUseCard)
-                item.setOptionBackground(details!!.optionTextBackground)
-            item.setListener(details!!.listeners[i])
+                details!!.optionTextBackground?.let { item.setOptionBackground(it) }
+            details!!.listeners?.get(i)?.let { item.setListener(it) }
             menuItems.add(item)
             if (!isMenuGroup)
                 mainContainer!!.addView(item)

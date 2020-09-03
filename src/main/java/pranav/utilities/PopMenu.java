@@ -65,7 +65,7 @@ public abstract class PopMenu implements View.OnTouchListener, View.OnLongClickL
                 iy = y;
                 break;
             case MotionEvent.ACTION_UP:
-                Utilities.Resources res = new Utilities.Resources(v.getContext());
+                Utilities.ResourceManager res = new Utilities.ResourceManager(v.getContext());
                 if (Math.abs(Math.sqrt(ix * ix + iy * iy) - Math.sqrt(x * x + y * y)) > res.getPx(48))
                     return v.performClick();
                 break;
@@ -75,7 +75,7 @@ public abstract class PopMenu implements View.OnTouchListener, View.OnLongClickL
 
     @Override
     public boolean onLongClick(View v) {
-        Utilities.Resources res = new Utilities.Resources(v.getContext());
+        Utilities.ResourceManager res = new Utilities.ResourceManager(v.getContext());
         if (anchor != null) {
             anchor.setX(x + res.getPx(20));
             anchor.setY(y);

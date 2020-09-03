@@ -276,8 +276,17 @@ object Animations {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    class AnimateStatusBar(private val window: Window?) : Listeners.l1<AnimateStatusBar>() {
-        private lateinit var interpolator: TimeInterpolator
+    class AnimateSystemBar(
+        private val window: Window?,
+        var mode: Int = ANIMATE_STATUS_BAR
+    ) : Listeners.l1<AnimateSystemBar>() {
+        companion object {
+            const val ANIMATE_STATUS_BAR = 1
+            const val ANIMATE_NAVIGATION_BAR = 2
+            const val ANIMATE_BOTH = 3
+        }
+
+        private var interpolator: TimeInterpolator = DI
         private var duration = ANIMATION_DURATION
         var isLightStatusBar: Boolean = false
             private set
@@ -306,7 +315,16 @@ object Animations {
             val animatingColor = AnimatingColor(colorFrom, colorTo)
             animatingColor.setColorChangeListener(object : AnimatingColor.ColorChangeListener {
                 override fun onColorChanged(color: Int) {
-                    if (window != null) window.statusBarColor = color
+                    if (window != null) {
+                        when (mode) {
+                            ANIMATE_NAVIGATION_BAR -> window.navigationBarColor = color
+                            ANIMATE_STATUS_BAR -> window.statusBarColor = color
+                            ANIMATE_BOTH -> {
+                                window.navigationBarColor = color
+                                window.statusBarColor = color
+                            }
+                        }
+                    }
                 }
             })
             animatingColor.addListener(listeners)
@@ -329,7 +347,7 @@ object Animations {
             pranav.utilities.Utilities.clearLightStatusBar(window!!)
         }
 
-        fun setInterpolator(interpolator: TimeInterpolator): AnimateStatusBar {
+        fun setInterpolator(interpolator: TimeInterpolator): AnimateSystemBar {
             this.interpolator = interpolator
             return this
         }
@@ -342,7 +360,7 @@ object Animations {
             return duration
         }
 
-        fun setDuration(duration: Long): AnimateStatusBar {
+        fun setDuration(duration: Long): AnimateSystemBar {
             this.duration = duration
             return this
         }

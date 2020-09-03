@@ -11,7 +11,7 @@ import com.preons.pranav.utilities.R
 import pranav.utilities.Animations.ANIMATION_DURATION
 import pranav.utilities.Animations.DI
 import pranav.utilities.Utilities
-import pranav.utilities.Utilities.Resources.getColoredDrawable
+import pranav.utilities.Utilities.ResourceManager.Companion.getColoredDrawable
 
 /**
  * Created on 09-06-2017 at 03:43 by Pranav Raut.
@@ -26,7 +26,7 @@ class FMGroup : LinearLayout {
     )
     private lateinit var groupDetail: FMGroupHelper
     private val c = context
-    var res = Utilities.Resources(c)
+    var res = Utilities.ResourceManager(c)
     private val container = LinearLayout(c)
     private val imageView = ImageView(c)
     private val textView = TextView(c)

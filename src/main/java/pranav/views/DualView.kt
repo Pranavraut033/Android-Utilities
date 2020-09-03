@@ -29,7 +29,7 @@ class DualView(private val tParent: ViewGroup, @IdRes fromView: Int, @IdRes toVi
 
     private var sY: Float = 0.toFloat()
     private var sX: Float = 0.toFloat()
-    private var res: Utilities.Resources? = null
+    private var res: Utilities.ResourceManager? = null
     private var fH: Float = 0.toFloat()
     private var fW: Float = 0.toFloat()
     private var tH: Float = 0.toFloat()
@@ -105,7 +105,7 @@ class DualView(private val tParent: ViewGroup, @IdRes fromView: Int, @IdRes toVi
     }
 
     private fun initVis() {
-        res = Utilities.Resources(c)
+        res = Utilities.ResourceManager(c)
 
         fromView.setOnClickListener(l)
 

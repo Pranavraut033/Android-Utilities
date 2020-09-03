@@ -4,6 +4,7 @@ package pranav.utilities
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Configuration
@@ -23,7 +24,7 @@ import android.view.ViewTreeObserver
 import android.view.Window
 import android.widget.FrameLayout
 import android.widget.PopupMenu
-import androidx.appcompat.app.AppCompatActivity
+import androidx.annotation.*
 import androidx.core.app.ActivityCompat
 import androidx.core.graphics.ColorUtils
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -126,7 +127,7 @@ object Utilities {
     }
 
     fun checkAndAsk(
-        activity: AppCompatActivity,
+        activity: Activity,
         requestCode: Int,
         vararg permissions: String
     ): Boolean {
@@ -136,7 +137,7 @@ object Utilities {
     }
 
     fun addKeyboardToggleListener(
-        a: AppCompatActivity,
+        a: Activity,
         listener: KeyboardToggleListener
     ): ViewTreeObserver.OnGlobalLayoutListener {
         val decorView = a.window.decorView.rootView
@@ -190,6 +191,21 @@ object Utilities {
         return false
     }
 
+    /**
+     * Function to compare multiple object
+     *
+     * @param object1 The object to compare
+     * @param objects the collection of objects that the `object1` is being compared
+     * @return `true` if anyone of the object in the collection matches to `object1`
+     */
+    fun isEqual_AND(object1: Any, vararg objects: Any): Boolean {
+        for (o in objects) {
+            if (object1 != o) {
+                return false
+            }
+        }
+        return true
+    }
 
     /**
      * function to get first non-empty string
@@ -203,7 +219,7 @@ object Utilities {
         return "None"
     }
 
-    class Resources(private val context: Context) {
+    class ResourceManager(private val context: Context) {
         private val metrics: DisplayMetrics = context.resources.displayMetrics
 
         val deviceHeight: Int

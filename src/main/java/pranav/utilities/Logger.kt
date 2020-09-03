@@ -40,6 +40,14 @@ class Logger(
         w(*data, e = e, tag = tag, b = debug, i = 1)
     }
 
+    fun e(vararg data: Any?, e: Exception? = null) {
+        e(*data, e = e, tag = tag, b = debug, i = 1)
+    }
+
+    fun e(e: Exception? = null, vararg data: Any?) {
+        e(*data, e = e, tag = tag, b = debug, i = 1)
+    }
+
     companion object {
         var DEBUG: Boolean = true
         var VERBOSE: Boolean = true
@@ -63,6 +71,13 @@ class Logger(
         }
 
         fun w(
+            vararg data: Any?, e: Exception? = null, tag: String = TAG, b: Boolean = DEBUG,
+            i: Int = 0
+        ) {
+            if (b && DEBUG) Log.w(tag, "\n" + createMsg(data, i), e)
+        }
+
+        fun e(
             vararg data: Any?, e: Exception? = null, tag: String = TAG, b: Boolean = DEBUG,
             i: Int = 0
         ) {

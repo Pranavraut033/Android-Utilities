@@ -1,39 +1,39 @@
 -- Merging decision tree log ---
 manifest
-ADDED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+ADDED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
 	package
-		ADDED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:11-48
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:11-48
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
 	android:versionName
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-		ADDED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
 	xmlns:android
-		ADDED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+		ADDED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
 	android:versionCode
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-		ADDED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:1:1-5:12
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:1:1-5:12
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
 application
-ADDED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml:3:5-20
+ADDED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml:3:5-20
 uses-sdk
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml reason: use-sdk injection requested
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
 	android:targetSdkVersion
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-		ADDED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
 	android:minSdkVersion
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-		ADDED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
-		INJECTED from E:\_workspace\Android\PrarambhEdu\Utilities\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+		ADDED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
+		INJECTED from F:\Projects\KheloCard\KheloCard\Utilities\src\main\AndroidManifest.xml
